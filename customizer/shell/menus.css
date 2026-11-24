@@ -1,0 +1,110 @@
+/* ── Menus - Surface ─────────────────────────────────────────────────────── */
+/* One look for every menu: the app bar's dropdowns and the context menus (the ⋮ buttons
+   and right-click), which upstream builds from different markup, plus the search results
+   panel. Positioning stays with whatever opens the menu, in app-bar.css. */
+:root {
+  --menu-padding: 0.3rem;
+  --menu-item-gap: 0.1rem;
+}
+
+.app-bar-nav .ve-dropdown-menu,
+.app-bar-nav .omni__output,
+.ve-ui-ctx__wrp {
+  min-inline-size: 18rem;
+  margin: 0;
+  padding: var(--menu-padding);
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-radius-medium);
+  background: var(--shell-color-surface);
+  color: var(--shell-color-text);
+  font-size: var(--shell-font-size-body);
+  box-shadow: 0 0.4rem 1.2rem oklch(0% 0 0deg / 35%);
+}
+
+/* The context menu is already a flex column; the dropdown only becomes one while open,
+   so upstream's closed state still hides it. */
+.app-bar-nav .open > .ve-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-bar-nav .ve-dropdown-menu,
+.ve-ui-ctx__wrp,
+.ve-ui-ctx__row,
+.app-bar-nav .ve-dropdown-menu > li.ve-flex-v-center {
+  gap: var(--menu-item-gap);
+}
+
+/* ── Menus - Items ───────────────────────────────────────────────────────── */
+.app-bar-nav .ve-dropdown-menu > li > :is(a, span),
+.app-bar-nav .ve-dropdown-menu :is(.nav2-accord__head, .nav2-accord__lnk-item),
+.ve-ui-ctx__btn {
+  display: block;
+  margin: 0;
+  padding-block: var(--shell-space-2);
+  padding-inline: var(--shell-space-3);
+  border: 0;
+  border-radius: var(--shell-radius-small);
+  color: var(--shell-color-text);
+  font-size: var(--shell-font-size-body);
+  line-height: 2rem;
+  cursor: pointer;
+}
+
+/* Borders snap to whole pixels; upstream's 1px background bars blurred to different
+   greys when zoomed. With the item gap this leaves the same space as the menu's edge. */
+.app-bar-nav .ve-dropdown-divider,
+.ve-ui-ctx__divider {
+  flex-shrink: 0;
+  block-size: 0;
+  margin-block: calc(var(--menu-padding) - var(--menu-item-gap));
+  margin-inline: 0;
+  border-block-start: 0.1rem solid var(--shell-color-border);
+  background: none;
+}
+
+/* ── Menus - Item Variants ───────────────────────────────────────────────── */
+/* Side-menu toggles, on/off switches and links with a trailing icon put the extra at the
+   end of the row. */
+.app-bar-nav .ve-dropdown-menu > li > :is(.ve-dropdown-toggle, .ve-dropdown-ext-link, .menu-toggle),
+.app-bar-nav .ve-dropdown-menu .nav2-accord__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--shell-space-3);
+}
+
+.app-bar-nav .ve-dropdown-menu .nav2-list__label {
+  padding-inline: var(--shell-space-3);
+}
+
+/* Upstream hangs the year into its 20px inset, which these menus no longer have. */
+.app-bar-nav .ve-dropdown-menu .page__nav-date {
+  inline-size: 2.8rem;
+  margin-inline-start: 0;
+  color: var(--shell-color-text-muted);
+}
+
+/* ── Menus - States ──────────────────────────────────────────────────────── */
+.app-bar-nav .ve-dropdown-menu > li > :is(a, span):where(:hover, :focus-visible),
+.app-bar-nav .ve-dropdown-menu > li.open > a,
+.app-bar-nav .ve-dropdown-menu :is(.nav2-accord__head, .nav2-accord__lnk-item):where(:hover, :focus-visible),
+.ve-ui-ctx__btn:where(:hover, :focus-visible) {
+  background: var(--shell-color-control-hover);
+  color: var(--shell-color-text);
+  text-decoration: none;
+}
+
+/* The page you're on, in the same accent as its bar button. */
+.app-bar-nav .ve-dropdown-menu > li.ve-active > a,
+.app-bar-nav .ve-dropdown-menu :is(.nav2-accord__head--active, .nav2-accord__lnk-item--active) {
+  background: var(--shell-color-accent);
+  color: var(--shell-color-accent-text);
+}
+
+.ve-ui-ctx__btn:is(.ve-disabled, [disabled]),
+.ve-ui-ctx__btn:is(.ve-disabled, [disabled]):hover {
+  background: none;
+  color: var(--shell-color-text-muted);
+  cursor: default;
+}

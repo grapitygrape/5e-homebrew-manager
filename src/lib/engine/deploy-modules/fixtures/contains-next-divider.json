@@ -1,0 +1,15 @@
+{
+  "name": "contains-next-divider",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "contains": "page: \"tables.html\"",
+      "alsoCommentNextDivider": true
+    }
+  ],
+  "input": "\t\tNavBar._addElement_li({page: \"tables.html\"});\n\t\tNavBar._addElement_divider();\n\t\tNavBar._addElement_li({page: \"names.html\"});\n",
+  "expected": "\t\t// NavBar._addElement_li({page: \"tables.html\"});\n\t\t// NavBar._addElement_divider();\n\t\tNavBar._addElement_li({page: \"names.html\"});\n",
+  "status": "applied"
+}

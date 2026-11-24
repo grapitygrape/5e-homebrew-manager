@@ -1,0 +1,24 @@
+{
+  "name": "option-gates-each-patch",
+  "target": "js/test.js",
+  "values": {
+    "hide-x": false,
+    "hide-y": true
+  },
+  "inserts": {},
+  "patches": [
+    {
+      "find": "a",
+      "replace": "x",
+      "option": "hide-x"
+    },
+    {
+      "find": "b",
+      "replace": "y",
+      "option": "hide-y"
+    }
+  ],
+  "input": "a b",
+  "expected": "a y",
+  "status": "applied"
+}

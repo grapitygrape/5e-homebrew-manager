@@ -1,0 +1,75 @@
+/* ── Search Suggestions - Menu ───────────────────────────────────────────── */
+/* The in:/source: suggestions under the search box (omni-complete.js). A popover, so it
+   sits above the results panel; the script places it under the box. */
+.omni-complete {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: none;
+  flex-direction: column;
+  gap: var(--menu-item-gap);
+  min-inline-size: var(--omni-complete-min-size, 18rem);
+  max-inline-size: min(40rem, 100vw - 2 * var(--shell-space-3));
+  max-block-size: min(32rem, 60dvh);
+  margin: 0;
+  padding: var(--menu-padding);
+  overflow-y: auto;
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-radius-medium);
+  background: var(--shell-color-surface);
+  box-shadow: 0 0.4rem 1.2rem oklch(0% 0 0deg / 35%);
+  color: var(--shell-color-text);
+  font-size: var(--shell-font-size-body);
+  translate: var(--omni-complete-x, 0) var(--omni-complete-y, 0);
+
+  &:popover-open {
+    display: flex;
+  }
+}
+
+/* ── Search Suggestions - Options ────────────────────────────────────────── */
+.omni-complete-option {
+  display: flex;
+  align-items: baseline;
+  gap: var(--shell-space-2);
+  padding-block: var(--shell-space-1);
+  padding-inline: var(--shell-space-2);
+  border-radius: var(--shell-radius-small);
+  line-height: 1.6rem;
+  cursor: pointer;
+
+  &:is(:hover, [aria-selected="true"]) {
+    background: var(--shell-color-control-hover);
+  }
+}
+
+.omni-complete-label {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* What an alias stands for, beside it. A long list (opf) cuts off before the count does. */
+.omni-complete-note {
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--shell-color-text-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  + .omni-complete-detail {
+    flex-shrink: 0;
+  }
+}
+
+/* Counts for categories and aliases, full titles for sources, at the end of the row.
+   A long source title is the only thing that cuts off here. */
+.omni-complete-detail {
+  min-inline-size: 0;
+  margin-inline-start: auto;
+  padding-inline-start: var(--shell-space-3);
+  overflow: hidden;
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

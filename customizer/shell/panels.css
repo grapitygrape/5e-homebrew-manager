@@ -1,0 +1,151 @@
+/* ── Panels - Frame ──────────────────────────────────────────────────────── */
+/* Stat blocks, class sections, the class table and book text are all tables. Separate
+   borders let a table take padding, so the frame needs no wrapper. */
+:is(.ve-stats, .ve-cls-tbl) {
+  border-collapse: separate;
+  border-spacing: 0;
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+  box-shadow: none;
+}
+
+/* ── Panels - Border Rows ────────────────────────────────────────────────── */
+/* The frame replaces the thick bars at either end. Bars between entries stay as rules. */
+/* JS-built tables put rows straight in the table, with no tbody, so both are covered. */
+:is(.ve-stats, .ve-cls-tbl) > tr:is(:first-child, :last-child):has(> th.ve-tbl-border),
+:is(.ve-stats, .ve-cls-tbl) > tbody > tr:is(:first-child, :last-child):has(> th.ve-tbl-border) {
+  display: none;
+}
+
+:is(.ve-stats, .ve-cls-tbl) th.ve-tbl-border {
+  block-size: 0.1rem;
+  padding: 0;
+  background: var(--shell-color-border);
+}
+
+/* ── Panels - Stat Block Grid ────────────────────────────────────────────── */
+/* render.js wraps each run of neighbouring stat blocks in this grid. A column is at least
+   half the row, so there are never more than two, and one when two won't fit. Each block
+   keeps its own height. */
+.statblock-grid {
+  --statblock-grid-column-min: 42rem;
+  --statblock-grid-column-gap: var(--shell-space-3);
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, max(var(--statblock-grid-column-min), (100% - var(--statblock-grid-column-gap)) / 2)), 1fr)
+  );
+  align-items: start;
+  gap: var(--shell-space-5) var(--statblock-grid-column-gap);
+  margin-block: var(--shell-space-5);
+
+  /* The grid spaces the rows; upstream's inline margins and narrow cap still apply. */
+  > .ve-rd__wrp-embedded-data {
+    margin-block: 0;
+  }
+}
+
+/* ── Panels - Changelog ──────────────────────────────────────────────────── */
+/* The changelog's content is a main element, not a table, so it gets the frame directly. */
+main#pagecontent {
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  background: var(--shell-color-surface);
+}
+
+/* ── Panels - List Page Wrapper ──────────────────────────────────────────── */
+.wrp-stats-table {
+  border-block: 0;
+}
+
+/* ── Panels - Hover Previews ─────────────────────────────────────────────── */
+/* The window carries the frame. It keeps a light shadow because it floats over the page. */
+.ve-hwin {
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+  box-shadow: 0 0.2rem 0.8rem oklch(0% 0 0deg / 35%);
+
+  .ve-hoverborder,
+  .ve-hwin__wrp-table {
+    background: none;
+  }
+
+  .ve-stats {
+    border: 0;
+    background: none;
+  }
+}
+
+/* ── Panels - Source Footer ──────────────────────────────────────────────── */
+/* Built by Renderer.utils.getSourceAndPageTrHtml. The source sits at the card's bottom end in
+   the list's source-column colour; notes such as reprints and SRD take the rest of the row. */
+.source-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--shell-space-2) var(--shell-space-4);
+  color: var(--shell-color-text-muted);
+}
+
+.source-footer-notes {
+  flex: 1 1 24rem;
+  min-inline-size: 0;
+}
+
+.source-footer .source-chip {
+  margin-inline-start: auto;
+}
+
+/* ── Panels - Source Chip ────────────────────────────────────────────────── */
+/* Built by Renderer.utils.getSourceChipHtml for card footers and inline section headers:
+   the source in the list's source-column colour, then the page, then the brew link. The
+   page is an ordinary link when it opens a book; otherwise it's plain text. */
+.source-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--shell-space-2);
+  color: var(--shell-color-text);
+  font-family: var(--shell-font-body);
+  font-weight: 400;
+  white-space: nowrap;
+
+  :is(a, span) {
+    text-decoration: none;
+  }
+}
+
+/* Pointing the theme's link colour at the parent's lets a book link keep the source colour,
+   and its hover still shifts from there. */
+.source-chip-abbreviation {
+  --shell-color-link: currentcolor;
+}
+
+/* The glyph has its own colour, so the link colour stays off the icon. */
+.source-chip-link .glyphicon {
+  color: var(--shell-color-text);
+  font-size: var(--shell-icon-size);
+}
+
+/* ── Panels - Source Chip In Headers ─────────────────────────────────────── */
+/* Beside a section title the chip is a quiet control, like the collapse toggle next to it:
+   the same small size and grey, with only the source abbreviation in colour. Upstream fades
+   it with opacity instead, and the heading would otherwise pass on its small caps. */
+.ve-rd__title-link {
+  font-size: var(--shell-font-size-small);
+  font-variant: normal;
+  opacity: 1;
+
+  .source-chip {
+    --shell-color-link: currentcolor;
+
+    color: var(--shell-color-text-muted);
+  }
+
+  .source-chip-link .glyphicon {
+    color: inherit;
+  }
+}

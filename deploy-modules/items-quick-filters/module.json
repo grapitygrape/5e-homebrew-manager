@@ -1,0 +1,23 @@
+{
+  "title": "Quick filters",
+  "description": "Adds All / Mundane / Magic / Variants buttons above the items list.",
+  "order": 90,
+  "defaultEnabled": true,
+  "card": "Items page",
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Items page quick filters (All / Mundane / Magic / Variants)",
+      "target": "js/items.js",
+      "patches": [
+        {
+          "note": "Append items quick-filter toggles beneath the filter mini-pills",
+          "insertFile": "items-quick-filter.js",
+          "position": "end",
+          "marker": "HBM:items-quick-filter",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

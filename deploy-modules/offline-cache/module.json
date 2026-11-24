@@ -1,0 +1,57 @@
+{
+  "title": "Smaller offline cache",
+  "description": "Keeps drafts, unused homebrew and anything you list below out of the service worker's offline copy.",
+  "order": 100,
+  "defaultEnabled": true,
+  "options": [
+    {
+      "id": "extraGlobs",
+      "label": "Also leave out (one pattern per line)",
+      "kind": "list",
+      "default": [
+        "homebrew/Conflux Creatures; Conflux Creatures.json",
+        "homebrew/Dragonix;*.json",
+        "homebrew/Kobold Press;*.json"
+      ]
+    },
+    {
+      "id": "skipMonsters",
+      "label": "Leave out monsters (no offline bestiary, much smaller cache)",
+      "kind": "toggle",
+      "default": false
+    }
+  ],
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Service worker precache exclusions",
+      "target": "node/build-sw.mjs",
+      "patches": [
+        {
+          "note": "Add globIgnores to the precache injectManifest call",
+          "find": "injectionPoint: \"self.__WB_PRECACHE_MANIFEST\",",
+          "replace": "injectionPoint: \"self.__WB_PRECACHE_MANIFEST\",\n\t// HBM: workbox ignores \"!\" negations in globPatterns; globIgnores is the only exclusion hook.\n\tglobIgnores: [\n\t\t\"homebrew/drafts/**\",\n\t\t\"homebrew/unused/**\",\n\t],",
+          "allowMissing": false,
+          "unlessContains": "HBM: workbox ignores"
+        },
+        {
+          "note": "Your extra exclusions",
+          "ensureArrayItems": {
+            "arrayKey": "globIgnores"
+          },
+          "itemsOption": "extraGlobs"
+        },
+        {
+          "note": "Leave out monsters",
+          "ensureArrayItems": {
+            "arrayKey": "globIgnores",
+            "items": [
+              "data/bestiary/**"
+            ]
+          },
+          "option": "skipMonsters"
+        }
+      ]
+    }
+  ]
+}

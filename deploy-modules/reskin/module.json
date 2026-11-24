@@ -1,0 +1,68 @@
+{
+  "title": "Reskin the site",
+  "description": "The new page shell from customizer/: app bar, layout, controls, theme and the reworked class, book and bestiary pages. Apply and Prepare re-export it from the customizer's site checkout (or committed upstream.patch when no checkout is set up).",
+  "order": 1,
+  "defaultEnabled": false,
+  "replaces": ["site-theme", "home-page", "pinned-list"],
+  "build": {
+    "description": "Export the customizer's package",
+    "cwd": "{manager}/customizer",
+    "script": "export",
+    "args": ["--worktree"]
+  },
+  "alsoChanges": ["*.html", "css/shell.css", "js/shell-tooltips.js", "js/shell-omni-complete.js"],
+  "options": [
+    {
+      "id": "package",
+      "label": "Exported package folder",
+      "kind": "path",
+      "default": "{manager}/customizer/patch-deploy"
+    }
+  ],
+  "entries": [
+    {
+      "type": "diff",
+      "description": "Shell edits to upstream's JS, templates and SCSS",
+      "source": "{option:package}/reskin.patch"
+    },
+    {
+      "type": "npm",
+      "description": "Regenerate the pages",
+      "script": "gen:pages",
+      "parallel": true
+    },
+    {
+      "type": "npm",
+      "description": "Rebuild the CSS",
+      "script": "build:css",
+      "parallel": true
+    },
+    {
+      "type": "copy",
+      "description": "Shell CSS, fonts, images and home page",
+      "source": "{option:package}/site",
+      "target": "."
+    },
+    {
+      "type": "copy",
+      "description": "Majesty Bold display font (optional)",
+      "source": "{data}/fonts/majesty-bold.woff2",
+      "target": "fonts/majesty-bold.woff2",
+      "ifExists": true
+    },
+    {
+      "type": "copy",
+      "description": "Majesty Black display font (optional)",
+      "source": "{data}/fonts/majesty-black.woff2",
+      "target": "fonts/majesty-black.woff2",
+      "ifExists": true
+    },
+    {
+      "type": "copy",
+      "description": "Modesto Condensed display font (optional)",
+      "source": "{data}/fonts/modesto-condensed.woff2",
+      "target": "hbm/modesto-condensed/modesto-condensed.woff2",
+      "ifExists": true
+    }
+  ]
+}

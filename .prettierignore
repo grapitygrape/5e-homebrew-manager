@@ -1,0 +1,12 @@
+build
+.svelte-kit
+node_modules
+package-lock.json
+foundry-homebrew-bridge
+# The homebrew tools shell keeps upstream's code style
+customizer
+# Generated copies from mimic-ui; edit there and re-sync
+src/lib/ui/mimic
+# Generated injected script bundles; edit src/lib/{site-browser,renderer-supersede}/
+src-tauri/src/site-browser.js
+deploy-modules/content-replacement/renderer-supersede.js

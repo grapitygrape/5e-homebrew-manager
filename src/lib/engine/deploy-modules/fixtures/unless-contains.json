@@ -1,0 +1,16 @@
+{
+  "name": "unless-contains",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "find": "foo",
+      "replace": "bar baz qux",
+      "unlessContains": "HBM: marker"
+    }
+  ],
+  "input": "foo // HBM: marker\n",
+  "expected": "foo // HBM: marker\n",
+  "status": "applied"
+}

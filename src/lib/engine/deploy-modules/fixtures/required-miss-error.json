@@ -1,0 +1,16 @@
+{
+  "name": "required-miss-error",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "note": "Needed thing",
+      "find": "nope",
+      "replace": "x"
+    }
+  ],
+  "input": "abc\n",
+  "expected": "abc\n",
+  "status": "error"
+}

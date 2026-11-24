@@ -1,0 +1,15 @@
+{
+  "name": "find-replace-two-matches",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "find": "= 1",
+      "replace": "= 2"
+    }
+  ],
+  "input": "a = 1;\nb = 1;\n",
+  "expected": "a = 2;\nb = 2;\n",
+  "status": "applied"
+}

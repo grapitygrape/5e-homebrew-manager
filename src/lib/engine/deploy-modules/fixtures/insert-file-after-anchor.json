@@ -1,0 +1,19 @@
+{
+  "name": "insert-file-after-anchor",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {
+    "block.js": "const z = 1;\n"
+  },
+  "patches": [
+    {
+      "insertFile": "block.js",
+      "marker": "HBM:test",
+      "position": "after",
+      "find": "// anchor"
+    }
+  ],
+  "input": "a();\n// anchor\nb();\n",
+  "expected": "a();\n// anchor\n/* === BEGIN HBM:test === */\nconst z = 1;\n/* === END HBM:test === */\n\nb();\n",
+  "status": "applied"
+}

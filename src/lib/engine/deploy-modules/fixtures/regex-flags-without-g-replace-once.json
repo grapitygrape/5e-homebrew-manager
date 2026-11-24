@@ -1,0 +1,17 @@
+{
+  "name": "regex-flags-without-g-replace-once",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "isRegex": true,
+      "flags": "m",
+      "find": "^const (\\w+) = 1;$",
+      "replace": "const $1 = 2;"
+    }
+  ],
+  "input": "const a = 1;\nconst b = 1;\n",
+  "expected": "const a = 2;\nconst b = 1;\n",
+  "status": "applied"
+}

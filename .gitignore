@@ -1,0 +1,46 @@
+# dependencies
+node_modules/
+
+# SvelteKit / Vite build output
+.svelte-kit/
+build/
+dist/
+.vite/
+
+# Tauri / Cargo build output (Cargo.lock stays tracked: this is an app)
+target/
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# test / coverage
+coverage/
+.cache/
+
+# local config, generated artifacts & BYO data
+.env
+.env.*
+!.env.example
+hbm-config.json
+release.config.json
+audit.json
+*.tmp.json
+/homebrew/
+/data-sources/
+# A local Tools source checkout: upstream content, never committed
+/5e/
+
+# editor / os
+.DS_Store
+*.log
+*.code-workspace
+
+# AI
+.superpowers/
+# docs/ holds plans and notes; keep architecture, bridge protocol, and example scripts.
+docs/*
+!docs/ARCHITECTURE.md
+!docs/FOUNDRY-BRIDGE.md
+!docs/deploy-scripts/
+AGENTS.md
+CLAUDE.md
+.claude/

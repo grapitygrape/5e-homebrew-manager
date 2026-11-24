@@ -1,0 +1,19 @@
+node_modules/
+
+# Local only: the licensed fonts, and this machine's site path. The textures are committed.
+assets/*
+!assets/watercolor-*.webp
+!assets/paper_fibers_*.webp
+local.json
+
+# Built by npm run export, read by the manager's Reskin module
+patch-deploy/
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+docs/

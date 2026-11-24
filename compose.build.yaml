@@ -1,0 +1,9 @@
+# Local build override — builds the Docker image from this git checkout instead
+# of pulling the prebuilt image from GitHub Container Registry (GHCR).
+#
+# Usage:
+#   docker compose -f compose.yaml -f compose.build.yaml up -d --build
+services:
+  5e-homebrew-manager:
+    build: .
+    image: 5e-homebrew-manager:local

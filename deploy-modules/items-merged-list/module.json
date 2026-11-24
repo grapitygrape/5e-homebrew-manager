@@ -1,0 +1,24 @@
+{
+  "title": "One merged list",
+  "description": "Shows mundane and magic items in one full-width table instead of two side-by-side lists.",
+  "order": 80,
+  "defaultEnabled": true,
+  "card": "Items page",
+  "css": "items-merged-list.css",
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Items page single merged list (mundane + magic in one table)",
+      "target": "js/items.js",
+      "patches": [
+        {
+          "note": "Merge mundane and magic item lists into one table",
+          "insertFile": "items-single-list.js",
+          "position": "end",
+          "marker": "HBM:items-single-list",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

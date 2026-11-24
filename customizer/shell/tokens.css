@@ -1,0 +1,101 @@
+/* ── Tokens - Scales ─────────────────────────────────────────────────────── */
+/* Upstream sets the root font to 10px and its rem values depend on that, so 1rem is 10px here. */
+:root {
+  --shell-space-1: 0.2rem;
+  --shell-space-2: 0.4rem;
+  --shell-space-3: 0.8rem;
+  --shell-space-4: 1.2rem;
+  --shell-space-5: 1.6rem;
+
+  --shell-radius-small: 0.3rem;
+  --shell-radius-medium: 0.6rem;
+
+  --shell-font-size-small: 1.2rem;
+  --shell-font-size-body: 1.4rem;
+  --shell-font-size-title: 2.8rem;
+
+  --shell-control-block-size: 2.8rem;
+  --shell-badge-block-size: 2rem;
+  --shell-icon-size: 1.2rem;
+  --shell-bar-block-size: 4rem;
+
+  --shell-panel-padding: 0.5rem;
+
+  --shell-font-titles: "Majesty Bold", "Modesto Condensed", "Nodesto Caps Condensed", "Times New Roman", serif;
+  --shell-font-headings: "Modesto Condensed", "Nodesto Caps Condensed", "Times New Roman", serif;
+  --shell-font-body: convergence, roboto, helvetica, sans-serif;
+
+  --shell-color-accent: oklch(37.6% 0.122 15.4deg);
+  --shell-color-accent-text: oklch(98% 0.01 20deg);
+  --shell-color-link-alt: oklch(65.8% 0.206 38.1deg);
+}
+
+/* ── Tokens - Light Theme ────────────────────────────────────────────────── */
+:root {
+  --shell-color-page: oklch(97% 0.006 60deg);
+  --shell-image-page: url("../watercolor-light.webp");
+  --shell-color-surface: oklch(99% 0.004 60deg);
+  --shell-color-surface-raised: oklch(94% 0.008 60deg);
+  --shell-color-bar: oklch(27% 0.012 60deg);
+  --shell-color-bar-text: oklch(93% 0.01 80deg);
+  --shell-color-text: oklch(25% 0.012 60deg);
+  --shell-color-text-muted: oklch(48% 0.012 60deg);
+  --shell-color-border: oklch(84% 0.01 60deg);
+  --shell-color-border-strong: oklch(62% 0.012 60deg);
+  --shell-color-title: var(--shell-color-accent);
+  --shell-color-link: oklch(47.1% 0.193 29.2deg);
+
+  /* Hover darkens links and home buttons by day and brightens them at night. */
+  --shell-hover-lightness: 0.75;
+  --shell-hover-chroma: 0.8;
+
+  --shell-color-home-player: oklch(53.9% 0.085 227.3deg);
+  --shell-color-home-rules: var(--shell-color-link);
+  --shell-color-home-dm: oklch(53.1% 0.191 311.1deg);
+
+  /* Home cards: how far the icon's front layer moves from the section colour, and the
+     card's resting and hover shadows. */
+  --shell-home-icon-lightness: 0.85;
+  --shell-home-shadow: 0 0.1rem 0.2rem oklch(0% 0 0deg / 8%);
+  --shell-home-shadow-hover: 0 0.3rem 0.8rem -0.3rem;
+}
+
+/* ── Tokens - Panels ─────────────────────────────────────────────────────── */
+:root {
+  --shell-panel-border: 0.1rem solid var(--shell-color-border);
+  --shell-panel-radius: var(--shell-radius-small);
+  /* Control fills sit close to the page colour, so this frame is what marks their edge. */
+  --shell-control-border: 0.1rem solid var(--shell-color-border-strong);
+  --shell-color-control-hover: color-mix(in oklch, var(--shell-color-surface-raised), var(--shell-color-text) 10%);
+}
+
+/* ── Tokens - Night Theme ────────────────────────────────────────────────── */
+:root.ve-night-mode {
+  --shell-color-page: oklch(19% 0.006 260deg);
+  --shell-image-page: url("../watercolor-dark.webp");
+  --shell-color-surface: oklch(22.3% 0.0013 17); /* oklch(23% 0.004 60deg);*/
+  --shell-color-surface-raised: oklch(28% 0.005 60deg);
+  --shell-color-bar: oklch(24% 0.005 60deg);
+  --shell-color-bar-text: oklch(90% 0.01 80deg);
+  --shell-color-text: oklch(88% 0.008 80deg);
+  --shell-color-text-muted: oklch(66% 0.008 80deg);
+  --shell-color-border: oklch(34% 0.005 60deg);
+  --shell-color-border-strong: oklch(55% 0.006 60deg);
+  --shell-color-title: oklch(77.1% 0.112 83.3deg);
+  --shell-color-link: oklch(75.5% 0.088 83.9deg);
+
+  --shell-hover-lightness: 1.2;
+  --shell-hover-chroma: 1.2;
+
+  --shell-color-home-player: oklch(53% 0.094 219.7deg);
+  --shell-color-home-rules: oklch(49.8% 0.132 12.2deg);
+
+  --shell-home-icon-lightness: 1.4;
+  --shell-home-shadow: 0 0.1rem 0.3rem oklch(0% 0 0deg / 30%);
+
+  /* Boxed text gets a notched frame at night. */
+  --shell-inset-notch: 0.8rem;
+  --shell-inset-corner: 2.2rem;
+  --shell-color-inset-frame: oklch(44.4% 0.015 63.6deg);
+  --shell-color-inset-fill: oklch(30.2% 0 0deg);
+}

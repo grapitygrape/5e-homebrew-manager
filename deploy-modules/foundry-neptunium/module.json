@@ -1,0 +1,21 @@
+{
+  "title": "Neptunium settings in Foundry",
+  "description": "Changes nothing on the site. Each Foundry world connected through the bridge gets Neptunium's data source settings from yours: Load Local Homebrew from the Foundry homebrew deploy folder with its index.json, and the site, image, audio and fonts URLs from the Tools URL. The GM is asked to reload when anything changes. Deploy on the Blocklist page sets the World Content Blocklist itself either way.",
+  "order": 130,
+  "card": "Foundry",
+  "defaultEnabled": true,
+  "options": [
+    {
+      "id": "blocklist-players",
+      "label": "Apply World Content Blocklist for players",
+      "kind": "toggle",
+      "default": true
+    },
+    {
+      "id": "blocklist-gms",
+      "label": "Apply World Content Blocklist for GMs",
+      "kind": "toggle",
+      "default": true
+    }
+  ]
+}

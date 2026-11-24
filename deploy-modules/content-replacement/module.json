@@ -1,0 +1,33 @@
+{
+  "title": "Content replacement",
+  "description": "Sends links to replaced content on to its replacement, using what you saved on the Replace Content page.",
+  "order": 70,
+  "defaultEnabled": true,
+  "link": {
+    "href": "/replacement",
+    "label": "Replace content"
+  },
+  "entries": [
+    {
+      "type": "copy",
+      "description": "Replacement list from Replace Content",
+      "source": "{data}/content/content-replacement.json",
+      "target": "data/content-replacement.json",
+      "ifExists": true
+    },
+    {
+      "type": "patch",
+      "description": "Content supersession runtime (redirects superseded content to its replacement)",
+      "target": "js/render.js",
+      "patches": [
+        {
+          "note": "Append Renderer.supersede, which hooks getTagMeta/getPageTr/getFnRenderCompact/Hist/ListPage itself",
+          "insertFile": "renderer-supersede.js",
+          "position": "end",
+          "marker": "HBM:supersede",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

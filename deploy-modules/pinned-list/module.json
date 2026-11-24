@@ -1,0 +1,34 @@
+{
+  "title": "Pinned list",
+  "description": "Boxes the pinned list with its controls above it, and gives the Pin button a label and a new icon.",
+  "order": 85,
+  "defaultEnabled": true,
+  "css": "pinned-list.css",
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Box the pinned list and label the Pin button",
+      "target": "js/listpage.js",
+      "patches": [
+        {
+          "note": "Put the controls and the table in one box, controls first",
+          "find": "\t\tthis._wrpContainer.vee.after(this._wrpSummaryControls);",
+          "replace": "\t\tconst wrpPinnedList = veE({tag: \"div\", clazz: \"hm-pinned-list\"});\n\t\tthis._wrpContainer.vee.before(wrpPinnedList);\n\t\t// The box has its own padding, and this class can't be overridden.\n\t\tthis._wrpSummaryControls.classList.remove(\"ve-pt-2\");\n\t\twrpPinnedList.append(this._wrpSummaryControls, this._wrpContainer);",
+          "allowMissing": false
+        },
+        {
+          "note": "Add a method for the labelled Pin button",
+          "find": "\t_bindPinButton () {",
+          "replace": "\t_getLabelledPinButton () {\n\t\tconst btn = this._getOrTabRightButton(`pin`, `glyphicon-pushpin`);\n\t\tbtn.classList.remove(\"ve-w-24p\");\n\t\tbtn.classList.add(\"hm-pin-button\");\n\t\tbtn.innerHTML = `<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 640\" aria-hidden=\"true\"><!--!Font Awesome Pro 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.--><path opacity=\".4\" d=\"M114 263C112.4 273.2 115.7 283.5 123 290.8C266.3 434.1 273.9 441.7 349.3 517.1C356.6 524.4 366.9 527.7 377.1 526.1C387.3 524.5 396 518 400.6 508.8L402 506C421.6 466.9 424.7 422.9 412.7 382.8L510.9 268.2L521.4 278.7C533.9 291.2 554.2 291.2 566.7 278.7C579.2 266.2 579.2 245.9 566.7 233.4L406.7 73.4C394.2 60.9 373.9 60.9 361.4 73.4C348.9 85.9 348.9 106.2 361.4 118.7L371.9 129.2L257.3 227.4C217.3 215.5 173.3 218.6 134.1 238.1L131.3 239.5C122.1 244.1 115.7 252.8 114 263z\"/><path d=\"M213.5 381.3L73.4 521.4C60.9 533.9 60.9 554.2 73.4 566.7C85.9 579.2 106.2 579.2 118.7 566.7L258.8 426.6L213.5 381.3z\"/></svg><span>Pin</span>`;\n\t\treturn btn;\n\t}\n\n\t_bindPinButton () {",
+          "allowMissing": false
+        },
+        {
+          "note": "Use it",
+          "find": "\t\tthis._getOrTabRightButton(`pin`, `glyphicon-pushpin`)",
+          "replace": "\t\tthis._getLabelledPinButton()",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

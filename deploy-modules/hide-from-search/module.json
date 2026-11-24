@@ -1,0 +1,21 @@
+{
+  "title": "Hide from search engines",
+  "description": "Adds a noindex, nofollow robots tag to every page, so search engines leave the site out.",
+  "order": 20,
+  "defaultEnabled": true,
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Add norobots meta tag to document head",
+      "target": "js/navigation.js",
+      "patches": [
+        {
+          "note": "Inject noindex,nofollow meta tag on init",
+          "find": "static init () {",
+          "replace": "static init () {\n\t\tdocument.head.insertAdjacentHTML(\"beforeend\", `<meta name=\"robots\" content=\"noindex, nofollow\">`);",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+/* mimic-ui 0.1.1 · sha256:e08e7beb884e6e8c · generated copy, edit in mimic-ui and re-sync. */
+/* mimic-ui tokens: the shared vocabulary every project uses.
+   Token names carry no prefix on purpose: they are the house names that each
+   repo moves to (scale and names follow 5e-ancestry-builder). Anything that
+   belongs to a mimic component carries the mimic- prefix instead.
+   Projects override any token with plain unlayered CSS, at :root or on any
+   element. Colors are written once with light-dark(); set `color-scheme` on
+   :root to light, dark, or "light dark" to pick. */
+
+@layer mimic.reset, mimic.tokens, mimic.components;
+
+@layer mimic.tokens {
+  :root {
+    color-scheme: light dark;
+
+    /* ── Tokens - Spacing ────────────────────────────────────────────────── */
+    /* 0.25rem steps; the number is the multiple. --space-4 is 1rem. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* ── Tokens - Type Scale ─────────────────────────────────────────────── */
+    /* 0.8125rem is the smallest size that stays readable. */
+    --text-xs: 0.8125rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 2rem;
+    --text-3xl: 2.5rem;
+    --leading-tight: 1.25;
+    --leading-normal: 1.3125;
+    --leading-relaxed: 1.5;
+
+    /* ── Tokens - Fonts ───────────────────────────────────────────────────── */
+    /* The house faces come first; projects without the licensed files fall
+       through to the free stand-ins, then to system fonts. Fonts are not
+       loaded here: each project loads the ones it uses. */
+    --font-body: "Source Sans 3", "Fira Sans", system-ui, sans-serif;
+    --font-ui: "Trade Gothic Next LT Pro Cn", "Barlow Condensed", "Segoe UI", system-ui, sans-serif;
+    --font-display: "Spirits Soft", "New Spirit", Fraunces, Georgia, serif;
+    --font-data: "Geist Mono", ui-monospace, "Cascadia Code", monospace;
+
+    /* ── Tokens - Neutrals ───────────────────────────────────────────────── */
+    /* Parchment-warm in light, warm ink in dark. Surfaces: 1 is the page,
+       2 is raised (panels, inputs), 3 is muted (wells, hover fills). */
+    --color-surface-1: light-dark(oklch(0.962 0.016 85), oklch(0.165 0.01 85));
+    --color-surface-2: light-dark(oklch(0.988 0.008 85), oklch(0.205 0.011 85));
+    --color-surface-3: light-dark(oklch(0.93 0.018 85), oklch(0.245 0.012 85));
+    --color-border: light-dark(oklch(0.87 0.02 85), oklch(0.3 0.012 85));
+    --color-border-strong: light-dark(oklch(0.76 0.022 85), oklch(0.4 0.014 85));
+    --color-text: light-dark(oklch(0.25 0.015 70), oklch(0.93 0.012 85));
+    --color-text-dim: light-dark(oklch(0.44 0.018 70), oklch(0.76 0.014 85));
+    --color-text-muted: light-dark(oklch(0.53 0.016 85), oklch(0.62 0.014 85));
+
+    /* ── Tokens - Accent and Status ──────────────────────────────────────── */
+    /* Gold is the one signal color: a gold thing on screen is a live thing,
+       so keep it off decoration. Status colors only report status. Soft tints
+       and hover shades are mixed inside each component from these, so
+       overriding one color on any element recolors everything under it. */
+    --color-accent: light-dark(oklch(0.52 0.11 75), oklch(0.81 0.11 75));
+    --color-on-accent: light-dark(oklch(0.985 0.008 75), oklch(0.19 0.02 70));
+    --color-success: light-dark(oklch(0.48 0.08 165), oklch(0.79 0.12 155));
+    --color-warning: light-dark(oklch(0.53 0.13 50), oklch(0.77 0.13 55));
+    --color-error: light-dark(oklch(0.48 0.16 22), oklch(0.71 0.15 22));
+    --color-info: light-dark(oklch(0.48 0.085 230), oklch(0.77 0.085 230));
+
+    /* ── Tokens - Shape ──────────────────────────────────────────────────── */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-pill: 999rem;
+    --border-width: 0.0625rem;
+    --focus-width: 0.125rem;
+
+    /* ── Tokens - Shadows ────────────────────────────────────────────────── */
+    --shadow-sm: 0 0.0625rem 0.125rem oklch(0 0 0 / 0.1);
+    --shadow-md: 0 0.25rem 0.375rem oklch(0 0 0 / 0.12);
+    --shadow-lg: 0 0.625rem 0.9375rem oklch(0 0 0 / 0.15);
+
+    /* ── Tokens - Controls ───────────────────────────────────────────────── */
+    /* Every control sizes itself from these three, so .mimic-size-small on a
+       toolbar shrinks everything inside it. Base size because the UI face is
+       condensed. */
+    --control-block-size: 2.25rem;
+    --control-padding-inline: var(--space-4);
+    --control-font-size: var(--text-base);
+
+    /* ── Tokens - Component Defaults ─────────────────────────────────────── */
+    /* House defaults for a few component knobs. Set on :root so any scope
+       can turn them back off: .settings { --mimic-tab-transform: none; } */
+    --mimic-tab-transform: uppercase;
+    --mimic-tab-tracking: 0.04em;
+    --mimic-pill-transform: uppercase;
+    --mimic-pill-tracking: 0.04em;
+    --mimic-empty-title-size: var(--text-xl);
+    --mimic-empty-title-weight: 400;
+
+    /* ── Tokens - Motion ─────────────────────────────────────────────────── */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 400ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --transition-fast: 0ms;
+      --transition-base: 0ms;
+      --transition-slow: 0ms;
+    }
+  }
+
+  /* ── Tokens - Size Modifiers ───────────────────────────────────────────── */
+  :where(.mimic-size-small) {
+    --control-block-size: 1.75rem;
+    --control-padding-inline: var(--space-3);
+    --control-font-size: var(--text-sm);
+  }
+
+  :where(.mimic-size-large) {
+    --control-block-size: 2.75rem;
+    --control-padding-inline: var(--space-5);
+    --control-font-size: var(--text-lg);
+  }
+
+  /* ── Tokens - Page Base ────────────────────────────────────────────────── */
+  :where(body) {
+    background: var(--color-surface-1);
+    color: var(--color-text);
+    font-family: var(--font-body);
+  }
+
+  /* One focus ring for anything focusable. Never remove it without a
+     replacement: several controls have no other keyboard affordance. */
+  :where(:focus-visible) {
+    outline: var(--focus-width) solid var(--focus-color, var(--color-accent));
+    outline-offset: 0.125rem;
+  }
+}

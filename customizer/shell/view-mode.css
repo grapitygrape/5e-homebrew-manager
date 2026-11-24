@@ -1,0 +1,40 @@
+/* ── View Mode - Player View ─────────────────────────────────────────────── */
+/* navigation.js sets data-view on the root before the page draws, so DM-only parts never
+   flash. Unlayered, so this beats upstream's display utilities. */
+:root[data-view="player"] .dm-only {
+  display: none;
+}
+
+/* ── View Mode - Home Prompt ─────────────────────────────────────────────── */
+/* Asked once; hidden as soon as either view is chosen. */
+.view-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--shell-space-3);
+  margin-block: var(--shell-space-5);
+  text-align: center;
+
+  :root[data-view] & {
+    display: none;
+  }
+}
+
+.view-prompt-question {
+  margin: 0;
+  font-family: var(--shell-font-titles);
+  font-size: 2.4rem;
+}
+
+.view-prompt-choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--shell-space-3);
+}
+
+.view-prompt-note {
+  margin: 0;
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+}

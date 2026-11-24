@@ -1,0 +1,17 @@
+{
+  "name": "fill-options-lower",
+  "target": "js/test.js",
+  "values": {
+    "label": " Ancestries "
+  },
+  "inserts": {},
+  "patches": [
+    {
+      "find": "Species",
+      "replace": "{option:label:lower} and {option:label}"
+    }
+  ],
+  "input": "Species",
+  "expected": "ancestries and Ancestries",
+  "status": "applied"
+}

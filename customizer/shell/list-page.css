@@ -1,0 +1,236 @@
+/* ── List Page - Frame ───────────────────────────────────────────────────── */
+.list-page-frame {
+  --list-page-gap: var(--shell-space-3);
+
+  flex: 1 1 auto;
+  block-size: auto;
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.list-page {
+  block-size: 100%;
+  padding: var(--list-page-gap);
+  grid-template-rows: minmax(0, 1fr);
+
+  > .view-col {
+    block-size: auto;
+    min-block-size: 0;
+    margin: 0;
+  }
+}
+
+/* ── List Page - List Pane ───────────────────────────────────────────────── */
+.list-pane {
+  gap: var(--shell-space-2);
+
+  .list--stats {
+    flex: 1 1 0;
+    min-block-size: 12.8rem;
+    max-block-size: none;
+    overflow-y: auto;
+    margin-inline: 0;
+  }
+}
+
+/* ── List Page - Row Text ────────────────────────────────────────────────── */
+/* Each row is a link, so without this the theme's link colour would tint every row. */
+.list--stats a {
+  /*color: var(--shell-color-text);*/
+}
+
+/* ── List Page - Row Fill ────────────────────────────────────────────────── */
+/* Upstream fills rows a shade off the card at night. Rows sit on the card instead and only
+   fill on hover. Selection is a box-shadow upstream, so it still shows. */
+.ve-lst__row:not(.ve-lst__row--selected, .list-multi-selected) {
+  background: none;
+
+  &:hover {
+    background: var(--shell-color-surface-raised);
+  }
+}
+
+/* ── List Page - Offscreen Rows ──────────────────────────────────────────── */
+/* The bestiary renders 8,000 rows. Offscreen ones skip style, layout and paint until they
+   scroll near view. Rows are 1.6rem; once drawn, "auto" keeps a row's real height. */
+.list--stats > .ve-lst__row {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 1.6rem;
+}
+
+/* ── List Page - Search Row ──────────────────────────────────────────────── */
+/* The frame and height come from controls.css, shared with the buttons beside it. */
+.ve-lst__form-top .ve-lst__search {
+  background: var(--shell-color-surface);
+  box-shadow: none;
+  font-size: var(--shell-font-size-body);
+
+  &:focus-visible {
+    outline-offset: -0.2rem;
+  }
+}
+
+/* ── List Header - Base ──────────────────────────────────────────────────── */
+/* Sort buttons read as table headings: text on the card with one rule underneath. New markup
+   opts in with .list-header; upstream's header rows are listed by id. */
+:is(.list-header, #filtertools, #filtertools-mundane, #filtertools-magic, #sublistsort, .manage-brew-sort, .manbrew__filtertools) {
+  border-block-end: var(--shell-panel-border);
+
+  .ve-btn {
+    padding-inline: var(--shell-space-1);
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--shell-color-text-muted);
+    font-size: var(--shell-font-size-small);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .ve-btn:where(:hover, :focus-visible, :has(.ve-lst__caret--active)) {
+    color: var(--shell-color-text);
+  }
+
+  .ve-btn:where(:hover, :focus-visible) {
+    background: var(--shell-color-surface-raised);
+  }
+
+  /* Shows only its chevron, centred over the rows' chevrons. */
+  .ve-lst__btn-collapse-all-previews {
+    font-size: 0;
+    text-align: center;
+  }
+
+  /* Each heading takes its alignment from the same column of the first row, so a centred
+     column gets a centred heading without every page saying so. Child combinators keep the
+     check to that one row; a descendant one walks every row whenever the list re-renders. */
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(2).ve-text-center) > :nth-child(2),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(3).ve-text-center) > :nth-child(3),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(4).ve-text-center) > :nth-child(4),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(5).ve-text-center) > :nth-child(5),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(6).ve-text-center) > :nth-child(6),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(7).ve-text-center) > :nth-child(7),
+  &:has(~ .list > .ve-lst__row:first-child > :is(.ve-lst__row-inner, .ve-lst__wrp-cells) > :nth-child(8).ve-text-center) > :nth-child(8) {
+    text-align: center;
+  }
+}
+
+/* ── List Header - Card Rule ─────────────────────────────────────────────── */
+/* The rule runs edge to edge across the card. The stable gutter reserves the same width as
+   the list's scrollbar, so the end column lines up with the rows under it. The gutter needs
+   a scroll container, and a scroll container can shrink below its content in a flex column,
+   so it must not shrink. */
+:where(.list-pane, #sublistcontainer) :is(.list-header, #filtertools, #filtertools-mundane, #filtertools-magic, #sublistsort) {
+  flex-shrink: 0;
+  margin-inline: calc(-1 * var(--shell-panel-padding));
+  padding-inline: var(--shell-panel-padding);
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* ── List Header - Sort Caret ────────────────────────────────────────────── */
+/* Upstream draws the caret with borders. Font Awesome's caret-down, or caret-up when reversed. */
+.ve-lst__caret--active {
+  inline-size: auto;
+  block-size: auto;
+  margin-inline-start: var(--shell-space-2);
+  border: 0;
+  font-family: "Shell Icons", monospace;
+  font-weight: 900;
+
+  &::before {
+    content: "\f0d7";
+  }
+}
+
+.ve-lst__caret--reverse {
+  transform: none;
+
+  &::before {
+    content: "\f0d8";
+  }
+}
+
+/* ── List Header - Expand Toggles ────────────────────────────────────────── */
+/* Upstream's "[+]" text stays in the DOM, since its JS reads it for state, but only a chevron
+   shows. A row is open when its preview is; the header sets aria-expanded (listpage.js). */
+:is(.ve-lst__btn-toggle-expand, .ve-lst__btn-collapse-all-previews) {
+  color: var(--shell-color-text-muted);
+  font-size: 0;
+  margin-inline-start: -0.5em;
+
+  &::before {
+    content: "\f054";
+    font-family: "Shell Icons", monospace;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  &:hover {
+    color: var(--shell-color-text);
+  }
+}
+
+:is(.ve-lst__row:has(> .ve-accordion__wrp-preview:not(.ve-hidden)) .ve-lst__btn-toggle-expand, .ve-lst__btn-collapse-all-previews[aria-expanded="true"])::before {
+  content: "\f078";
+}
+
+/* ── List Page - Detail Pane ─────────────────────────────────────────────── */
+.detail-pane {
+  gap: var(--shell-space-2);
+
+  .wrp-stats-table {
+    flex: 0 1 auto;
+    min-block-size: 0;
+  }
+}
+
+/* ── List Page - Stacked ─────────────────────────────────────────────────── */
+/* The window scrolls here rather than the panes, so the list needs its own height. */
+@container layout-panes (inline-size < 96rem) {
+  .list-page {
+    block-size: auto;
+    grid-template-rows: auto;
+  }
+
+  .list-pane .list--stats {
+    flex: 0 0 auto;
+    block-size: min(55vh, 44.8rem);
+  }
+
+  .detail-pane .wrp-stats-table {
+    overflow-y: visible;
+  }
+}
+
+@media (width <= 61.9375rem) {
+  .list-page-frame {
+    overflow: visible;
+  }
+}
+
+/* ── List Page - Pane Widths ─────────────────────────────────────────────── */
+/* Side by side, the preview keeps its share of the row up to 68rem and the list takes the
+   rest up to 120rem. Past both caps the pair sits centred. */
+@container layout-panes (inline-size >= 96rem) {
+  .list-page {
+    --list-page-preview-share: 2 / 5;
+    --layout-panes-columns: minmax(0, 120rem) min(68rem, calc((100% - var(--layout-gap)) * var(--list-page-preview-share)));
+
+    justify-content: center;
+  }
+}
+
+/* ── List Page - Items ───────────────────────────────────────────────────── */
+/* The merged item list has seven columns, so it gets the larger share. Its list fills the
+   pane only side by side; stacked, a zero basis would collapse it to nothing. */
+@container layout-panes (inline-size >= 96rem) {
+  .list-page:has(.hm-itm__single-list) {
+    --list-page-preview-share: 4 / 11;
+  }
+
+  .hm-itm__single-list .ve-itm__wrp-list--mundane {
+    flex: 1 1 0;
+  }
+}

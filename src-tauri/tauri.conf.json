@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "5e Homebrew Manager",
+  "version": "0.8.0",
+  "identifier": "io.github.grapitygrape.homebrew-manager",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../build"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "5e Homebrew Manager",
+        "create": false,
+        "width": 1440,
+        "height": 920,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": false,
+    "resources": {
+      "../guides/": "guides/",
+      "../deploy-modules/": "deploy-modules/",
+      "../foundry-homebrew-bridge/": "foundry-homebrew-bridge/",
+      "../customizer/patch-deploy/": "customizer/patch-deploy/"
+    }
+  }
+}

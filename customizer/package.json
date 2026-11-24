@@ -1,0 +1,17 @@
+{
+	"name": "5e-homebrew-customizer",
+	"private": true,
+	"type": "module",
+	"description": "The custom page shell for 5e homebrew tools, kept as code plus a patch over an upstream checkout.",
+	"scripts": {
+		"setup": "node scripts/setup.mjs",
+		"save-patch": "node scripts/save-patch.mjs",
+		"serve": "node shell/dev-server.mjs",
+		"build": "node shell/build.mjs",
+		"export": "node shell/export.mjs",
+		"check": "node shell/check.mjs",
+		"lint:css": "node scripts/lint-css.mjs",
+		"test": "node --test scripts/ shell/",
+		"verify": "npm run lint:css && npm test && node shell/check.mjs --widths=1920,800,390 --flows"
+	}
+}

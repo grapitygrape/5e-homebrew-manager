@@ -1,0 +1,22 @@
+{
+  "title": "Site theme",
+  "description": "Custom theme: colours, headings, longform and book styles, and selected-row styles.",
+  "order": 10,
+  "defaultEnabled": true,
+  "css": "theme.css",
+  "entries": [
+    {
+      "type": "copy",
+      "description": "Modesto Condensed font, from the data folder's fonts/",
+      "source": "{data}/fonts/modesto-condensed.woff2",
+      "target": "hbm/modesto-condensed/modesto-condensed.woff2",
+      "ifExists": true
+    },
+    {
+      "type": "copy",
+      "description": "Nodesto Caps Condensed, the bundled fallback heading font, with its credits and licence",
+      "source": "../_shared/nodesto",
+      "target": "hbm/nodesto"
+    }
+  ]
+}

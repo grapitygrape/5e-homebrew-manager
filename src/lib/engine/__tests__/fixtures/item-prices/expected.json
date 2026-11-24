@@ -1,0 +1,30 @@
+{
+  "count": 9,
+  "doc": {
+    "_meta": { "sources": [] },
+    "item": [
+      { "name": "potion of healing", "source": "PHB", "value": 5000, "hbmPrice": { "original": 5000 } },
+      { "name": "Bag of Holding", "source": "DMG", "value": 40000, "hbmPrice": { "min": 30000, "max": 60000, "original": 50000 } },
+      { "name": "Bag of Holding", "source": "XDMG", "value": 45050, "hbmPrice": {} },
+      { "name": "Rope of Climbing", "source": "DMG", "value": 200000, "hbmPrice": { "original": 150000 } },
+      { "name": "Torch", "source": "PHB", "value": 1 },
+      { "name": "Rope of Climbing", "source": "Brew", "value": 200000, "hbmPrice": { "original": 300000 }, "_copy": { "name": "Rope of Climbing", "source": "DMG" } },
+      { "name": "Bag of Holding", "source": "Brew", "value": 45050, "hbmPrice": {}, "_copy": { "name": "Bag of Holding", "source": "XDMG" } },
+      { "name": "Rope of Climbing Deluxe", "source": "Brew", "_copy": { "name": "Rope of Climbing", "source": "DMG" } }
+    ],
+    "itemGroup": [
+      { "name": "Potion of Healing", "source": "XDMG", "value": 5000, "hbmPrice": { "original": 5000 } }
+    ],
+    "magicvariant": [
+      { "name": "+1 Weapon", "inherits": { "source": "DMG", "value": 100000, "valueExpression": "[[baseItem.value]] + 100000", "hbmPrice": { "max": 150000, "plusBase": true } } },
+      { "name": "+2 Weapon", "inherits": { "source": "DMG", "valueExpression": "[[baseItem.value]] + 400000" } },
+      { "name": "+1 Weapon", "source": "Brew", "_copy": { "name": "+1 Weapon", "source": "DMG", "_mod": {
+        "inherits.source": { "mode": "setProp", "value": "Brew" },
+        "inherits.valueExpression": { "mode": "setProp", "value": "[[baseItem.value]] + 100000" },
+        "inherits.value": { "mode": "setProp", "value": 100000 },
+        "inherits.hbmPrice": { "mode": "setProp", "value": { "max": 150000, "plusBase": true } },
+        "inherits.valueMult": "remove"
+      } } }
+    ]
+  }
+}

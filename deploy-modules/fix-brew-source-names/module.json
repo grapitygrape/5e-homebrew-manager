@@ -1,0 +1,22 @@
+{
+  "title": "Fix brew source names",
+  "description": "Works around a 5etools bug where homebrew loaded from the site's homebrew/ folder shows raw source ids and loses its colours.",
+  "order": 110,
+  "defaultEnabled": true,
+  "card": "Homebrew loading",
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Invalidate the brew source-meta cache once the local homebrew/ folder has loaded",
+      "target": "js/utils-brew/utils-brew-base.js",
+      "patches": [
+        {
+          "note": "Clear _cache_metas/_cache_sourceStyles when _cache_brewsLocal is populated",
+          "find": "return this._cache_brewsLocal = brewDocs;",
+          "replace": "// HBM: `_cache_metas` is derived from `_cache_brewsLocal`, but upstream only ever\n\t\t// invalidates it in `_setBrewMetas`. Any sync source lookup (`hasSourceJson`,\n\t\t// `sourceJsonToAbv`, ...) that runs before this async load lands therefore freezes\n\t\t// the table with only the localStorage-backed metas in it — every brew loaded from\n\t\t// `homebrew/` then renders as its raw source id, and loses its source colour, for\n\t\t// the rest of the page's life. Drop the derived caches now the real inputs are in.\n\t\tthis._cache_metas = null;\n\t\tthis._cache_sourceStyles = null;\n\t\treturn this._cache_brewsLocal = brewDocs;",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

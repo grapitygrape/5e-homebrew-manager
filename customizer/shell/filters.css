@@ -1,0 +1,47 @@
+/* ── Filter Summary - Base ───────────────────────────────────────────────── */
+/* Loading many sources makes this run to six rows, so it scrolls past two. */
+.ve-fltr__mini-view {
+  flex-shrink: 0;
+  gap: var(--shell-space-1);
+  max-block-size: 5.4rem;
+  padding: var(--shell-space-1);
+  overflow-y: auto;
+  border: 0;
+  background: none;
+  scrollbar-width: thin;
+
+  &:empty {
+    display: none;
+  }
+}
+
+/* ── Filter Summary - Pills ──────────────────────────────────────────────── */
+.ve-fltr__mini-view .ve-fltr__mini-pill {
+  margin: 0;
+}
+
+/* ── Filter Dialog - Layout ──────────────────────────────────────────────── */
+.ve-fltr__h {
+  gap: var(--shell-space-3);
+}
+
+.ve-fltr__wrp-pills {
+  gap: var(--shell-space-1);
+}
+
+.ve-fltr__pill {
+  margin: 0;
+}
+
+/* ── Filter Dialog - Controls ────────────────────────────────────────────── */
+/* The dialog header's groups and each section header's groups sit a step apart, wider than
+   the buttons inside a group. */
+:where(.filter-dialog-controls, .filter-dialog-footer, .filter-section-controls) {
+  gap: var(--shell-space-3);
+}
+
+/* Upstream sizes these buttons at 100% of their group, so the group has to stay shrinkable
+   or each button takes the whole row. */
+.filter-section-controls .ve-btn-group {
+  flex-shrink: 1;
+}

@@ -1,0 +1,27 @@
+.text-input {
+  width: 100%;
+  padding: var(--hm-space-1-5) var(--hm-space-2-5);
+  font: inherit;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-tight);
+  color: var(--text-main);
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.12s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.text-input:focus-visible {
+  outline: var(--hm-space-0-5) solid var(--gold);
+  outline-offset: var(--hm-space-0-5);
+}
+
+.text-input:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

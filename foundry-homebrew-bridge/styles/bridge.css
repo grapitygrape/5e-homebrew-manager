@@ -1,0 +1,190 @@
+/* Homebrew Manager Bridge — status dialog only. Nothing here touches core UI. */
+
+.hm-bridge .hm-bridge-state {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+  font-size: var(--font-size-16, 1rem);
+  font-weight: 600;
+}
+
+.hm-bridge .hm-bridge-state i {
+  font-size: 1.1em;
+}
+
+.hm-bridge .hm-bridge-connected {
+  border-color: #3f8f5f;
+  background: rgb(63 143 95 / 0.14);
+}
+.hm-bridge .hm-bridge-busy,
+.hm-bridge .hm-bridge-connecting {
+  border-color: #b58a3a;
+  background: rgb(181 138 58 / 0.14);
+}
+.hm-bridge :is(.hm-bridge-error, .hm-bridge-refused) {
+  border-color: #a33b3b;
+  background: rgb(163 59 59 / 0.14);
+}
+.hm-bridge :is(.hm-bridge-disconnected, .hm-bridge-offline) {
+  opacity: 0.75;
+}
+
+/* ── Bridge Status - Connections ───────────────────────────────────────────── */
+/* One row per manager URL; the state classes above colour each row. */
+.hm-bridge .hm-bridge-conns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.hm-bridge .hm-bridge-conn {
+  display: grid;
+  grid-template-columns: 1.2rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+  font-size: var(--font-size-13, 0.85rem);
+}
+
+.hm-bridge .hm-bridge-conn .hm-bridge-message {
+  grid-column: 2 / -1;
+  margin: 0;
+}
+
+.hm-bridge .hm-bridge-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: var(--font-size-13, 0.85rem);
+}
+
+.hm-bridge .hm-bridge-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.hm-bridge .hm-bridge-row > span:first-child {
+  flex: 0 0 5.5rem;
+  opacity: 0.7;
+}
+
+.hm-bridge .hm-bridge-row code {
+  font-size: 0.9em;
+  word-break: break-all;
+}
+
+.hm-bridge .hm-bridge-message {
+  margin: 0.4rem 0 0;
+  font-size: var(--font-size-12, 0.8rem);
+  color: #c96a6a;
+}
+
+.hm-bridge .hm-bridge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.hm-bridge .hm-bridge-actions button {
+  flex: 1 1 auto;
+  white-space: nowrap;
+}
+
+/* replaced-item banner (banner.js) */
+.hm-replaced-banner {
+  margin: 0 0 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #b8a02a;
+  border-radius: 4px;
+  background: #f3e27a;
+  color: #3a3000;
+  font-weight: 600;
+}
+
+/* chat message with the confirm / allow buttons (intercept.js) */
+.hm-replacement .hm-replacement-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hm-replacement .hm-replacement-buttons button {
+  flex: 1 1 auto;
+}
+
+/* ── Character Scan - Layout ───────────────────────────────────────────────── */
+/* The scan dialog (character-scan.js). Core's .standard-form styles the
+   fieldset per character, the hints and the footer, as in dnd5e's settings. */
+.hm-character-scan {
+  .hm-scan-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacer-16);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  /* ── Character Scan - Rows ─────────────────────────────────────────────── */
+  .hm-scan-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) auto;
+    align-items: start;
+    gap: var(--spacer-8);
+  }
+
+  :is(.hm-scan-original, .hm-scan-candidates) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hm-scan-candidate {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--spacer-8);
+  }
+
+  .hm-scan-candidate-where {
+    grid-column: 2;
+  }
+
+  :is(.hm-scan-done, .hm-scan-missing, .hm-scan-status) {
+    margin: 0;
+  }
+
+  .hm-scan-action button {
+    white-space: nowrap;
+  }
+
+  /* ── Character Scan - References ───────────────────────────────────────── */
+  .hm-scan-absent {
+    font-style: italic;
+  }
+
+  /* ── Character Scan - States ───────────────────────────────────────────── */
+  .hm-scan-done {
+    color: var(--color-level-success);
+  }
+
+  .hm-scan-missing {
+    color: var(--color-level-error);
+  }
+}
+
+/* ── Character Scan - Sidebar Button ───────────────────────────────────────── */
+.hm-scan-characters {
+  flex: 1 1 100%;
+}

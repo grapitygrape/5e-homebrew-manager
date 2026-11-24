@@ -1,0 +1,39 @@
+{
+  "id": "foundry-homebrew-bridge",
+  "title": "Homebrew Manager Bridge",
+  "description": "Lets the Homebrew Manager check this world's compendiums and Items directory for your JSON homebrew — reporting which entries exist, and whether each one has artwork, a description, and Activities, and opens a matched item's sheet on request. The world connects out to the manager; nothing listens for inbound requests.",
+  "authors": [
+    {
+      "name": "grapitygrape",
+      "url": "https://github.com/grapitygrape/"
+    }
+  ],
+  "version": "1.4.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "esmodules": ["scripts/module.js"],
+  "styles": ["styles/bridge.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "socket": false,
+  "url": "https://github.com/grapitygrape/5e-homebrew-manager",
+  "manifest": "https://github.com/grapitygrape/5e-homebrew-manager/releases/latest/download/foundry-homebrew-bridge.json",
+  "download": "https://github.com/grapitygrape/5e-homebrew-manager/releases/latest/download/foundry-homebrew-bridge.zip",
+  "bugs": "https://github.com/grapitygrape/5e-homebrew-manager/issues"
+}

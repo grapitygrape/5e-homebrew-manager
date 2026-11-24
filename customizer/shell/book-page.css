@@ -1,0 +1,477 @@
+/* ── Book Page - Layout ──────────────────────────────────────────────────── */
+/* Upstream gives the contents a sixth of a capped page, then above 1600px pins them to the
+   window's left edge. Here the reading column, capped at 96rem, sits centred in the window
+   with the contents in the gutter to its left. When the gutter gets too narrow for them,
+   the column gives up centring and moves right. Media queries count rem as 16px, so 62rem
+   is 992px. */
+@media (width > 62rem) {
+  .view-col-wrapper:has(> .book-view) {
+    display: grid;
+    --book-contents-min: 22rem;
+
+    /* A minmax() middle track loses to the fr tracks and collapses, so its width is set
+       outright: the cap, or whatever the contents leave. */
+    grid-template-columns:
+      minmax(var(--book-contents-min), 1fr)
+      min(96rem, 100% - var(--book-contents-min) - 2 * var(--shell-space-4))
+      minmax(0, 1fr);
+    gap: var(--shell-space-4);
+    block-size: auto;
+    max-block-size: none;
+
+    /* Bootstrap's clearfix would take the first grid cell and push both columns over. */
+    &::before,
+    &::after {
+      content: none;
+    }
+  }
+
+  #listcontainer.book-contents {
+    position: relative;
+    inset: auto;
+    justify-self: end;
+    inline-size: 100%;
+    max-inline-size: 36rem;
+    min-block-size: 0;
+    margin-inline: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  /* Stays beside the text while it scrolls, and scrolls on its own when it's taller than
+     the window. */
+  .book-contents .contents {
+    position: sticky;
+    inset-block-start: var(--shell-space-3);
+    max-block-size: calc(100dvh - 2 * var(--shell-space-3));
+    overflow-y: auto;
+  }
+
+  .book-view.view-col {
+    min-inline-size: 0;
+    margin-inline: 0;
+  }
+}
+
+.book-view {
+	.ve-rd__li {
+		margin-bottom: 0;
+	}
+}
+
+/* ── Book Page - Contents ────────────────────────────────────────────────── */
+/* Matches the class page outline: body type in the link colour, the book name as a
+   heading, and a faint rule between chapters instead of one under every row. The card
+   frame comes from cards.css. */
+.book-contents .contents {
+  font-family: var(--shell-font-body);
+  font-size: 1.3rem;
+
+  .ve-lst__row-border {
+    border-block-end: 0;
+  }
+
+  .bk-contents .ve-lst__row-inner {
+    padding-block: 0;
+    padding-inline: 0;
+    color: var(--shell-color-link);
+    line-height: 1.5;
+
+    &:hover {
+      background: var(--shell-color-surface-raised);
+      color: oklch(from var(--shell-color-link) calc(l * var(--shell-hover-lightness)) calc(c * var(--shell-hover-chroma)) h);
+    }
+  }
+}
+
+/* "All Books": a muted way back, above the card's heading. */
+#lst-contents > div:not(.contents-item) > a {
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+
+  > .ve-bold {
+    font-weight: 400;
+  }
+}
+
+.bk__contents-header {
+  align-items: baseline;
+  margin-block: 0 var(--shell-space-2);
+  padding: 0;
+  border-block: 0;
+  font-family: var(--shell-font-headings);
+  font-size: 2.2rem;
+
+  /* Upstream's 14px list line height overlaps a long name when it wraps. */
+  .bk__contents_header_link {
+    color: var(--shell-color-text);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+}
+
+/* Chapters start at the edge, sections under them are indented one step. */
+.bk-contents {
+  margin-inline-start: 0;
+  padding-inline-start: 0;
+
+  > .ve-flex-col:not(:has(> .ve-lst__row)) {
+    margin-inline-start: 0;
+    padding-inline-start: var(--shell-space-4);
+  }
+
+  /* A faint rule above each chapter after the first separates the chapters. */
+  > .ve-flex-col:has(> .ve-lst__row):not(:first-child) {
+    margin-block-start: var(--shell-space-1);
+    padding-block-start: var(--shell-space-1);
+    border-block-start: 0.1rem solid color-mix(in oklch, var(--shell-color-border), transparent 50%);
+  }
+}
+
+.bk-contents__sub_spacer--1 {
+  margin-inline: var(--shell-space-3) var(--shell-space-2);
+  color: var(--shell-color-text-muted);
+}
+
+/* ── Book Page - Contents Toggles ────────────────────────────────────────── */
+.book-contents-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  inline-size: 2rem;
+  block-size: 1.6rem;
+  border-radius: var(--shell-radius-small);
+  color: var(--shell-color-text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--shell-color-control-hover);
+    color: var(--shell-color-text);
+  }
+}
+
+/* ── Book Page - Chapter Bar ─────────────────────────────────────────────── */
+/* Upstream centres the page actions between Previous and Next, with empty placeholders
+   holding the slot of a missing button. Here the row starts at the left and Next sits at
+   the end. controls.css gives the buttons their frame. */
+.book-nav-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--shell-space-3);
+
+  > div.bk__nav-head-foot-item {
+    display: none;
+  }
+
+  /* Some of these are links, which don't centre their text the way buttons do. */
+  .ve-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shell-space-2);
+  }
+
+  .book-nav-next {
+    margin-inline-start: auto;
+  }
+}
+
+/* ── Book Page - Floating Controls ───────────────────────────────────────── */
+/* Previous, Next and To Top stack as squares at the window's edge. Where the reading column
+   leaves room beside it, they widen and show labels. */
+.book-float-controls {
+  --shell-control-block-size: 3.6rem;
+
+  inset-block-start: calc(var(--shell-bar-block-size) + var(--shell-space-3));
+  inset-inline-end: var(--shell-space-3);
+  gap: var(--shell-space-2);
+  padding: 0;
+
+  > .ve-btn-group {
+    flex-direction: column;
+    gap: var(--shell-space-2);
+    margin: 0;
+  }
+
+  .ve-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--shell-space-2);
+    inline-size: 100%;
+    min-inline-size: var(--shell-control-block-size);
+    padding-inline: 0;
+    font-size: var(--shell-icon-size);
+  }
+
+  .book-float-label {
+    display: none;
+  }
+}
+
+@media (width >= 100rem) {
+  .book-float-controls {
+    inline-size: 11rem;
+
+    .ve-btn {
+      padding-inline: var(--shell-space-3);
+      font-size: var(--shell-font-size-small);
+    }
+
+    .book-float-label {
+      display: inline;
+    }
+  }
+}
+
+/* ── Book List - Wide Layout ─────────────────────────────────────────────── */
+/* The books and adventures index. Wide, it stays in view on the left and scrolls on its
+   own while the covers fill the rest. Media queries count rem as 16px. */
+@media (width > 62rem) {
+  #listcontainer:has(> .books-index:not(.books-index-collapsed)) {
+    display: grid;
+    grid-template-columns: minmax(0, 60rem) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--shell-space-4);
+
+    > .ve-lst__form-top {
+      grid-column: 1 / -1;
+    }
+
+    > hr {
+      display: none;
+    }
+  }
+
+  .books-index:not(.books-index-collapsed) {
+    position: sticky;
+    inset-block-start: var(--shell-space-3);
+    display: flex;
+    flex-direction: column;
+    max-block-size: calc(100dvh - 2 * var(--shell-space-3));
+
+    .books-index-table {
+      display: flex;
+      flex: 0 1 auto;
+      flex-direction: column;
+      min-block-size: 0;
+    }
+
+    .list {
+      flex: 0 1 auto;
+      min-block-size: 0;
+      max-block-size: none;
+      overflow-y: auto;
+    }
+  }
+}
+
+/* ── Book List - Collapsed ───────────────────────────────────────────────── */
+/* The sidebar button hides the table. The search row sits outside it, since it filters the
+   covers too. */
+.books-index-collapsed .books-index-table {
+  display: none;
+}
+
+#listcontainer:has(> .books-index-collapsed) > hr {
+  display: none;
+}
+
+/* ── Book List - Table ───────────────────────────────────────────────────── */
+/* Header and rows share fixed type, level and date columns, wide enough that nothing breaks
+   mid-word. Upstream's width and flex utilities are !important, so the columns are set with
+   flex-basis, which wins over width, and capped where a button still carries ve-grow. */
+.books-index {
+  --books-index-type-size: 11rem;
+  --books-index-levels-size: 5rem;
+  --books-index-date-size: 10rem;
+  --books-index-gap: var(--shell-space-3);
+
+  #filtertools {
+    gap: var(--books-index-gap);
+
+    > .ve-btn {
+      padding-inline: 0;
+      text-align: start;
+    }
+
+    > [data-sort="group"] {
+      flex: 0 0 var(--books-index-type-size);
+    }
+
+    > [data-sort="name"] {
+      flex: 3 1 0;
+      min-inline-size: 0;
+    }
+
+    > [data-sort="storyline"] {
+      flex: 2 1 0;
+      min-inline-size: 0;
+    }
+
+    > [data-sort="level"] {
+      flex: 0 0 var(--books-index-levels-size);
+      text-align: center;
+    }
+
+    > [data-sort="published"] {
+      flex: 0 0 var(--books-index-date-size);
+      max-inline-size: var(--books-index-date-size);
+      text-align: end;
+    }
+
+    /* Stands over the contents toggle. */
+    > .ve-btn:disabled {
+      flex: 0 0 2rem;
+    }
+  }
+
+  .books > div > .ve-lst__row,
+  .books > div > .ve-lst__row > .ve-w-100 {
+    gap: var(--books-index-gap);
+  }
+
+  .books > div > .ve-lst__row > .ve-w-100 {
+    align-items: baseline;
+  }
+}
+
+@media (width <= 48rem) {
+  .books-index {
+    --books-index-type-size: 8rem;
+  }
+}
+
+/* ── Book List - Cells ───────────────────────────────────────────────────── */
+:is(.books-index-type, .books-index-levels, .books-index-date) {
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.books-index-type {
+  flex: 0 0 var(--books-index-type-size);
+
+  /* Upstream's list marker is an 8px box sized for a bare ʟ, so the brackets wrap. */
+  .ve-source-marker--list {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    margin-inline-start: 0.3rem;
+    padding: 0;
+    line-height: inherit;
+  }
+}
+
+.books-index-name {
+  flex: 3 1 0;
+  min-inline-size: 0;
+}
+
+.books-index-storyline {
+  flex: 2 1 0;
+  min-inline-size: 0;
+}
+
+.books-index-levels {
+  flex: 0 0 var(--books-index-levels-size);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.books-index-date {
+  flex: 0 0 var(--books-index-date-size);
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* ── Book List - Covers ──────────────────────────────────────────────────── */
+/* Covers sit flat on the page, each in a rounded frame with a little padding and its title
+   below. On hover the frame takes the book's colour and grows, as the home page's icons do.
+   Upstream's flex utilities on the shelf are !important, so the covers keep a fixed width
+   in a centred, wrapping row. */
+.bks__wrp-bookshelf {
+  gap: 2.4rem var(--shell-space-5);
+  padding-block: var(--shell-space-4);
+}
+
+#listcontainer:has(> .books-index-collapsed) > .bks__wrp-bookshelf {
+  margin-block-start: var(--shell-space-4);
+}
+
+/* Upstream's source class paints the item's border in the book's colour. The item draws no
+   border of its own, so the frame can inherit that colour on hover. */
+.bks__wrp-bookshelf > .bks__wrp-bookshelf-item {
+  /* Smaller than the home icons' scale, so the grown frame stays clear of the title. */
+  --books-cover-scale: 1.04;
+
+  /* Two to a row on a phone. */
+  flex: 0 0 min(22rem, (100% - var(--shell-space-5)) / 2);
+  margin: 0;
+  padding: 0;
+  border-style: none;
+  background: none;
+  box-shadow: none;
+  color: var(--shell-color-text);
+  text-decoration: none;
+
+  /* The images are square canvases with the cover in the middle three quarters, so cropping
+     to 3:4 leaves just the cover inside the frame. */
+  .bks__bookshelf-image {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 3 / 4;
+    margin-block-end: var(--shell-space-3);
+    padding: 1.2rem;
+    border: 0.1rem solid var(--shell-color-border);
+    border-radius: var(--shell-radius-medium);
+    background: var(--shell-color-surface);
+    box-shadow: var(--shell-home-shadow);
+    object-fit: cover;
+    transition:
+      transform 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  /* Upstream grows the title and centres it in a fixed height, which drops one-line
+     titles below their neighbours. */
+  .bks__bookshelf-item-name {
+    flex-grow: 0;
+    min-block-size: 0;
+    max-inline-size: none;
+    font-family: var(--shell-font-titles);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    transition: color 200ms ease;
+  }
+
+  &:is(:hover, :focus-visible) {
+    .bks__bookshelf-image {
+      border-width: 0.2rem;
+      transform: scale(var(--books-cover-scale));
+      border-color: inherit;
+      background-color: color-mix(in oklab, var(--shell-color-border) 20%, var(--shell-color-surface));
+      box-shadow: var(--shell-home-shadow-hover) oklch(0% 0 0deg / 50%);
+    }
+
+    .bks__bookshelf-item-name {
+      color: oklch(0% 0 0deg);
+    }
+  }
+}
+
+.ve-night-mode .bks__wrp-bookshelf > .bks__wrp-bookshelf-item:is(:hover, :focus-visible) .bks__bookshelf-item-name {
+  color: oklch(100% 0 0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bks__wrp-bookshelf > .bks__wrp-bookshelf-item {
+    --books-cover-scale: 1;
+  }
+}

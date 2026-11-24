@@ -1,0 +1,16 @@
+{
+  "name": "regex-default-global",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "isRegex": true,
+      "find": "x(\\d)",
+      "replace": "y$1"
+    }
+  ],
+  "input": "x1 x2",
+  "expected": "y1 y2",
+  "status": "applied"
+}

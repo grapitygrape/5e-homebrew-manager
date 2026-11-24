@@ -1,0 +1,118 @@
+name: Docker Multi-Arch Image
+
+# Pushes to main and PRs only build and smoke-test the image. A package is
+# published only for a release tag like v0.12.2 (made by `npm run release`).
+on:
+  push:
+    branches: [main]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PUBLISH: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (for arm64 runtime stage)
+        if: env.PUBLISH == 'true'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: env.PUBLISH == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # v0.12.2 gets 0.12.2, 0.12 and latest (latest is added for semver tags).
+      - name: Extract Docker metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      # Every run builds and starts the amd64 image first, so a broken image
+      # never reaches `latest` or a release tag.
+      - name: Build test image (linux/amd64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: false
+          load: true
+          tags: 5e-homebrew-manager:ci-test
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke-test container startup, health and plain-HTTP origin
+        run: |
+          set -euo pipefail
+          base=http://127.0.0.1:15052
+          cid="$(docker run -d -p 127.0.0.1:15052:5052 5e-homebrew-manager:ci-test)"
+          trap 'docker logs "$cid" || true; docker rm -f "$cid" >/dev/null 2>&1 || true' EXIT
+          body=""
+          for i in $(seq 1 30); do
+            body="$(curl -fsS "$base/api/health" 2>/dev/null)" && break
+            body=""
+            sleep 1
+          done
+          if [ -z "$body" ]; then
+            echo "Container failed to become healthy within 30s" >&2
+            exit 1
+          fi
+          echo "Health response: $body"
+          echo "$body" | grep -q '"ok":true'
+          echo "$body" | grep -q '"runtime":"container"'
+          # Over plain HTTP the bridge manifest must not advertise https URLs.
+          curl -fsS "$base/api/bridge/module.json" | grep -q "\"download\": \"$base/"
+          # The manager's own origin must pass the /api/foundry origin check.
+          status="$(curl -s -o /dev/null -w '%{http_code}' -X POST \
+            -H "Origin: $base" -H 'Content-Type: application/json' -d '{}' \
+            "$base/api/foundry/ping")"
+          if [ "$status" = "403" ]; then
+            echo "/api/foundry/ping rejected the manager's own origin" >&2
+            exit 1
+          fi
+
+      # No attestation manifests, so each release lists only its index plus
+      # the amd64 and arm64 images.
+      - name: Build and push multi-arch Docker image
+        if: env.PUBLISH == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          provenance: false
+          sbom: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

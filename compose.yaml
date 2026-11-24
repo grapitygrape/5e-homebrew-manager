@@ -1,0 +1,45 @@
+services:
+  5e-homebrew-manager:
+    # Prebuilt multi-arch image (linux/amd64 + linux/arm64) published by GitHub Actions.
+    # Pin a release tag in .env with HBM_IMAGE=ghcr.io/grapitygrape/5e-homebrew-manager:0.8.0
+    # To build locally from a git checkout instead, run:
+    #   docker compose -f compose.yaml -f compose.build.yaml up -d --build
+    image: ${HBM_IMAGE:-ghcr.io/grapitygrape/5e-homebrew-manager:latest}
+    container_name: 5e-homebrew-manager
+    restart: unless-stopped
+    mem_limit: 2g
+    ports:
+      - '${HBM_MANAGER_PORT:-5052}:5052' # Manager Web UI + REST/SSE API (GM)
+      - '${HBM_BRIDGE_PORT:-5051}:5051' # Foundry VTT bridge (direct LAN option)
+      - '${HBM_PREVIEW_PORT:-5050}:5050' # Candidate preview site (GM)
+      - '${HBM_SITE_PORT:-8080}:8080' # Live published site (Players)
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-UTC}
+      HBM_SITE_URL: ${HBM_SITE_URL:-}
+      HBM_SITE_BASE_PATH: ${HBM_SITE_BASE_PATH:-/}
+      HBM_PREVIEW_URL: ${HBM_PREVIEW_URL:-}
+      # The host port, so preview links match what the browser can reach.
+      HBM_PREVIEW_PUBLIC_PORT: ${HBM_PREVIEW_PORT:-5050}
+      HBM_AUTH_USER: ${HBM_AUTH_USER:-}
+      HBM_AUTH_PASS: ${HBM_AUTH_PASS:-}
+      HBM_BRIDGE_TOKEN: ${HBM_BRIDGE_TOKEN:-}
+      HBM_FOUNDRY_URLS: ${HBM_FOUNDRY_URLS:-}
+    volumes:
+      # Portable default — works on any Linux, macOS, or Windows Docker host:
+      - ${HBM_DATA_DIR:-./data}:/data
+      # Synology DSM override: set HBM_DATA_DIR=/volume1/docker/5e-homebrew-manager/data in .env
+      # Optional: mount a local Foundry VTT Data directory for 1-click bridge module deploy:
+      # - /volume1/docker/foundryvtt/Data:/foundry-data
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://127.0.0.1:5052/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'

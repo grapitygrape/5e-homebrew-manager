@@ -1,0 +1,23 @@
+/* ── Tooltips - Base ─────────────────────────────────────────────────────── */
+/* Built by tooltips.js from an element's title. It's a popover, so it sits in the top
+   layer over dialogs and hover windows; the script sets its position. */
+.shell-tooltip {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  max-inline-size: min(40rem, calc(100vw - 0.8rem));
+  margin: 0;
+  padding-block: var(--shell-space-1);
+  padding-inline: var(--shell-space-2);
+  overflow: visible;
+  border: var(--shell-control-border);
+  border-radius: var(--shell-radius-small);
+  background: var(--shell-color-bar);
+  box-shadow: 0 0.2rem 0.6rem oklch(0% 0 0deg / 35%);
+  color: var(--shell-color-bar-text);
+  font-size: var(--shell-font-size-small);
+  line-height: 1.35;
+  white-space: pre-line;
+  translate: var(--shell-tooltip-x, 0) var(--shell-tooltip-y, 0);
+  pointer-events: none;
+}

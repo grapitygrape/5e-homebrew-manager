@@ -1,0 +1,220 @@
+/* ── Controls - Frame ────────────────────────────────────────────────────── */
+/* New markup opts in with class="control-bar" on any wrapper: its buttons, button groups and
+   inputs all take the shared look, so new areas don't need adding to these lists. */
+/* Every framed control in the shell shares one height, border and corner. Each selector
+   keeps its own specificity, so the files that style these only add what differs. */
+.app-bar-nav .page__btn-toggle-nav,
+.app-bar-nav .omni__wrp-input,
+.ve-lst__form-top .ve-lst__search,
+.classes-bar .cls-tabs__sel-preset,
+.sublist-save-bar input,
+.manage-brew-search .manbrew__search,
+.detail-bar > .stat-tab-gen,
+:where(.detail-bar, .classes-header, #btngroup-manager, .ve-lst__form-top, .hm-itm__quick-filter, .sublist-save-bar, .manage-brew-toolbar, .manage-brew-search, .manage-brew-converters, .manage-brew-row-actions, .omni__output, .book-nav-bar, .book-float-controls, .encounter-builder, .encounter-builder-header, .filter-dialog-header, .filter-dialog-footer, .filter-dialog-modal, .filter-section-controls, .stats-name-controls, .control-bar) .ve-btn,
+.control-bar .ve-form-control {
+  block-size: var(--shell-control-block-size);
+  border: var(--shell-control-border);
+  border-radius: var(--shell-radius-small);
+}
+
+/* ── Controls - Button Rows ──────────────────────────────────────────────── */
+/* Detail-bar groups, the list search row, the item-type switch, the pinned list's save bar and
+   the homebrew manager's toolbar, search row and row actions, the book page's chapter bar,
+   the encounter builder's header and button groups, and the filter dialog's header, footer and
+   section headers. */
+:where(.detail-bar-group, .detail-bar .ve-btn-group, .detail-bar #tabs-right, #btngroup-manager, .ve-lst__form-top, .hm-itm__quick-filter, .sublist-save-bar .ve-btn-group, .manage-brew-toolbar .ve-btn-group, .ve-btn-group.manage-brew-toolbar, .manage-brew-search, .manage-brew-row-actions, .omni__output .ve-btn-group, .book-nav-bar .ve-btn-group, .encounter-builder .ve-btn-group, .encounter-builder-header-actions, .filter-dialog-header .ve-btn-group, .filter-dialog-controls, .filter-dialog-footer, .filter-section-controls, .filter-section-controls .ve-btn-group, .control-bar .ve-btn-group, .ve-btn-group.control-bar) {
+  --button-row-gap: var(--shell-space-1);
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--button-row-gap);
+  margin: 0;
+
+  &:empty {
+    display: none;
+  }
+}
+
+/* A group holding an input fills the row, so it has to shrink or it pushes the rest off. */
+.control-bar .ve-btn-group.ve-input-group {
+  flex-shrink: 1;
+  min-inline-size: 0;
+}
+
+/* ── Controls - Bar Buttons ──────────────────────────────────────────────── */
+:where(.detail-bar, .classes-header, #btngroup-manager, .ve-lst__form-top, .hm-itm__quick-filter, .sublist-save-bar, .manage-brew-toolbar, .manage-brew-search, .manage-brew-converters, .manage-brew-row-actions, .omni__output, .book-nav-bar, .book-float-controls, .encounter-builder, .encounter-builder-header, .filter-dialog-header, .filter-dialog-footer, .filter-dialog-modal, .filter-section-controls, .stats-name-controls, .control-bar) {
+  .ve-btn {
+    --bar-button-text: var(--shell-color-text);
+
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--shell-space-3);
+    background: var(--shell-color-surface-raised);
+    box-shadow: none;
+    color: var(--bar-button-text);
+    font-size: var(--shell-font-size-small);
+    line-height: 1;
+
+    /* Joined neighbours overlap this button's edge, so the focus ring sits inside. */
+    &:focus-visible {
+      outline-offset: -0.2rem;
+    }
+  }
+
+  /* Coloured buttons keep the neutral fill here and stand out by text colour, so one group
+     doesn't outweigh the bar. */
+  .ve-btn:is(.ve-btn-primary, .ve-btn-info, .ve-btn-success, .ve-btn-danger) {
+    --bar-button-text: var(--shell-color-title);
+  }
+
+  .ve-btn:is(:hover, :focus-visible),
+  .ve-btn:is(.ve-btn-primary, .ve-btn-info, .ve-btn-success, .ve-btn-danger):is(:hover, :focus) {
+    background: var(--shell-color-control-hover);
+  }
+
+  .ve-btn:is(.ve-active, .cls__btn-cf--active, .ve-ui-tab__btn-tab-head--active, .panel-addmenu-tab-head[active="true"]) {
+    background: var(--shell-color-accent);
+    color: var(--shell-color-accent-text);
+  }
+
+  /* An on/off toggle that's off goes outline-only with muted text, so on reads as the normal button. */
+  .ve-btn.filter-toggle-off {
+    --bar-button-text: var(--shell-color-text-muted);
+
+    &:not(:hover, :focus-visible) {
+      background: none;
+    }
+  }
+}
+
+/* ── Controls - Icon Buttons ─────────────────────────────────────────────── */
+/* An icon alone is a square with the icon centred. The app bar's search button shares the icon size. */
+:where(.detail-bar, .classes-header, #btngroup-manager, .ve-lst__form-top, .hm-itm__quick-filter, .sublist-save-bar, .manage-brew-toolbar, .manage-brew-search, .manage-brew-converters, .manage-brew-row-actions, .omni__output, .book-nav-bar, .encounter-builder-header, .filter-dialog-header, .filter-dialog-footer, .filter-dialog-modal, .filter-section-controls, .stats-name-controls, .control-bar) .ve-btn:has(> :is(.glyphicon, .manbrew-row__icn-btn--text):only-child) {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  inline-size: var(--shell-control-block-size);
+  /* Upstream's ve-w-24p and ve-h-21p set the size with !important; a minimum still overrides it. */
+  min-block-size: var(--shell-control-block-size);
+  min-inline-size: var(--shell-control-block-size);
+  padding: 0;
+  font-size: var(--shell-icon-size);
+}
+
+.app-bar-nav .omni__submit {
+  font-size: var(--shell-icon-size);
+}
+
+/* ── Controls - Joined Text Buttons ──────────────────────────────────────── */
+/* Text buttons side by side in a row, and the entry tabs in the detail bar, join into one
+   strip: each overlaps the edge before it and the corners where they meet go square.
+   Icon buttons stay apart. :has() can't nest, so "followed by an icon" is its own rule. */
+:where(.detail-bar, .detail-bar-group, .detail-bar .ve-btn-group, .detail-bar #tabs-right, #btngroup-manager, .ve-lst__form-top, .hm-itm__quick-filter, .sublist-save-bar .ve-btn-group, .manage-brew-toolbar .ve-btn-group, .ve-btn-group.manage-brew-toolbar, .omni__output .ve-btn-group, .book-nav-bar .ve-btn-group, .encounter-builder .ve-btn-group, .filter-dialog-header .ve-btn-group, .filter-section-controls .ve-btn-group, .control-bar .ve-btn-group, .ve-btn-group.control-bar) > .ve-btn:where(:not(:has(> .glyphicon:only-child))) {
+  &:has(+ .ve-btn) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  &:has(+ .ve-btn > .glyphicon:only-child) {
+    border-start-end-radius: var(--shell-radius-small);
+    border-end-end-radius: var(--shell-radius-small);
+  }
+
+  & + .ve-btn:where(:not(:has(> .glyphicon:only-child))) {
+    margin-inline-start: calc(-1 * var(--button-row-gap) - 0.1rem);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+}
+
+/* ── Controls - Homebrew Manager ─────────────────────────────────────────── */
+/* Upstream spaces the toolbar groups with margins, which the button rows reset to zero. */
+.manage-brew-toolbar:not(.ve-btn-group),
+.manage-brew-toolbar:not(.ve-btn-group) > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--shell-space-3);
+}
+
+/* Holds the slot of a missing row action so the icons line up between rows. */
+.manage-brew-row-spacer {
+  flex-shrink: 0;
+  min-inline-size: var(--shell-control-block-size);
+}
+
+/* ── Controls - Badges ───────────────────────────────────────────────────── */
+/* A small framed tag. New markup uses class="tag-badge"; a button badge gets a hover, and
+   .ve-active marks a selected one. Upstream's toggle chips join through this list. */
+:where(.tag-badge, .classes-subclass-chips > .ve-btn, .ve-ui-pick__disp-pill) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--shell-space-1);
+  block-size: var(--shell-badge-block-size);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--shell-space-2);
+  border: var(--shell-control-border);
+  border-radius: var(--shell-radius-small);
+  background: var(--shell-color-surface-raised);
+  box-shadow: none;
+  color: var(--shell-color-text);
+  font-size: var(--shell-font-size-small);
+  line-height: 1;
+}
+
+:where(.tag-badge:is(button, a, .ve-btn), .classes-subclass-chips > .ve-btn):is(:hover, :focus-visible) {
+  background: var(--shell-color-control-hover);
+}
+
+:where(.tag-badge.ve-active) {
+  border-color: var(--shell-color-accent);
+  background: var(--shell-color-accent);
+  color: var(--shell-color-accent-text);
+}
+
+/* The pick dialog's pills hold a remove button, which sits flush inside the badge. */
+.ve-ui-pick__disp-pill .ve-btn {
+  block-size: 100%;
+  margin-inline-end: calc(-1 * var(--shell-space-2));
+  border: 0;
+  border-inline-start: var(--shell-control-border);
+  border-radius: 0;
+  background: none;
+}
+
+/* ── Controls - Dice Roller Toggle ───────────────────────────────────────── */
+/* Upstream's minimised roller: a bare chevron on a grey tab. It takes the shared button frame
+   and sits off the window's corner so its border and radius show. */
+.rollbox-min {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  inline-size: var(--shell-control-block-size);
+  block-size: var(--shell-control-block-size);
+  /*inset-block-end: calc(var(--shell-space-3) + env(safe-area-inset-bottom, 0));*/
+  inset-inline-end: var(--shell-space-4);
+  border: var(--shell-control-border);
+  border-radius: var(--shell-radius-small) var(--shell-radius-small) 0 0;
+  border-bottom-width: 0;
+  background: var(--shell-color-surface-raised);
+  box-shadow: none;
+  color: var(--shell-color-text);
+  font-size: var(--shell-icon-size);
+  opacity: 0.5;
+
+  .glyphicon {
+    position: static;
+  }
+
+  &:is(:hover, :focus-visible) {
+    background: var(--shell-color-control-hover);
+    opacity: 1;
+  }
+}
+
+.rollbox {
+  inset-inline-end: var(--shell-space-4);
+}

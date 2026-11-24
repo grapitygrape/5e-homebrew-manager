@@ -1,0 +1,26 @@
+{
+  "name": "ensure-array-items-with-option",
+  "target": "js/test.js",
+  "values": {
+    "extra": [
+      "b/**",
+      " ",
+      "a/**"
+    ]
+  },
+  "inserts": {},
+  "patches": [
+    {
+      "ensureArrayItems": {
+        "arrayKey": "globIgnores",
+        "items": [
+          "a/**"
+        ]
+      },
+      "itemsOption": "extra"
+    }
+  ],
+  "input": "\tglobIgnores: [\n\t\t\"a/**\",\n\t],\n",
+  "expected": "\tglobIgnores: [\n\t\t\"a/**\",\n\t  \"b/**\",\n\t],\n",
+  "status": "applied"
+}

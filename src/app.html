@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/dice_color.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Vendored PrismJS (npm registry is unavailable in this environment).
+         `data-manual` stops Prism auto-scanning every page; the guides view
+         highlights its rendered code blocks explicitly. -->
+    <script
+      src="%sveltekit.assets%/vendor/prism-core.min.js"
+      data-manual
+      defer
+    ></script>
+    <script src="%sveltekit.assets%/vendor/prism-json.min.js" defer></script>
+    <!-- Font Awesome 7 Free (Solid), which the app can ship. Once the Tools
+         source checkout exists, lib/site-icons swaps in its Pro icons and
+         removes these links. -->
+    <link
+      rel="stylesheet"
+      href="%sveltekit.assets%/vendor/fontawesome/css/fontawesome.min.css"
+      data-icons-free
+    />
+    <link
+      rel="stylesheet"
+      href="%sveltekit.assets%/vendor/fontawesome/css/solid.min.css"
+      data-icons-free
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <script>
+      try {
+        if (localStorage.getItem('hbm-sidebar-collapsed') === '1') {
+          document.documentElement.classList.add('sidebar-collapsed');
+        }
+      } catch (e) {}
+    </script>
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

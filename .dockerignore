@@ -1,0 +1,34 @@
+# Build & dependency artifacts
+node_modules
+customizer/node_modules
+customizer/patch-deploy
+customizer/local.json
+**/target
+.cargo
+.svelte-kit
+build
+release
+dist
+
+# VCS, docs, editor & local dev data
+.git
+.gitignore
+.github
+.claude
+.probe
+.superpowers
+.vscode
+docs
+5e
+.env
+.env.*
+!.env.example
+hbm-config.json
+data
+release-notes.md
+
+# Logs & temporary files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

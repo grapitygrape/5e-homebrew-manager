@@ -1,0 +1,5 @@
+/* ── Navigation - Dividers ──────────────────────────────────────────────────── */
+/* Hiding links can leave a divider with nothing to separate. */
+#navigation .ve-dropdown-divider:is(:first-child, :last-child, :has(+ .ve-dropdown-divider)) {
+  display: none;
+}

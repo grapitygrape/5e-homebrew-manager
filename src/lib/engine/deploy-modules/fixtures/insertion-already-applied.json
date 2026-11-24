@@ -1,0 +1,15 @@
+{
+  "name": "insertion-already-applied",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "find": "init () {",
+      "replace": "init () {\n\t\tsetupRobots();"
+    }
+  ],
+  "input": "static init () {\n\t\tsetupRobots();\n\t}\n",
+  "expected": "static init () {\n\t\tsetupRobots();\n\t}\n",
+  "status": "applied"
+}

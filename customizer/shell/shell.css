@@ -1,0 +1,24 @@
+/* Loaded after upstream's CSS, which is in @layer vetools. The theme gets its own layer
+   above that; everything else here is unlayered, so it beats both without !important. */
+@import "tokens.css";
+@import "theme.css" layer(shell-theme);
+@import "icons.css";
+@import "primitives.css";
+@import "app-bar.css";
+@import "list-page.css";
+@import "detail-bar.css";
+/* After detail-bar.css: the shared button frame has to beat its flat-tab reset. */
+@import "controls.css";
+/* After controls.css: the floating book controls resize the shared frame. */
+@import "book-page.css";
+/* After controls.css: the bestiary resizes some of the shared frame's buttons. */
+@import "bestiary.css";
+@import "menus.css";
+@import "panels.css";
+@import "cards.css";
+/* After cards.css: the class page merges its cards into one. */
+@import "classes-page.css";
+@import "filters.css";
+@import "tooltips.css";
+@import "omni-complete.css";
+@import "view-mode.css";

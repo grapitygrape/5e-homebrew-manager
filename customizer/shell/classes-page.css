@@ -1,0 +1,480 @@
+/* ── Classes Page - Layout ───────────────────────────────────────────────── */
+/* The class list, one card for the selected class, and its quick reference. Three columns
+   when there's room, the quick reference under the list below that, and one column on
+   narrow screens. */
+main.classes {
+  container: classes-page / inline-size;
+}
+
+.classes-layout {
+  display: grid;
+  grid-template-areas: "rail" "main" "side";
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--shell-space-3);
+}
+
+.classes-rail {
+  grid-area: rail;
+}
+
+.classes-main {
+  grid-area: main;
+}
+
+/* Stretches to the full row so the sticky outline has room to travel. */
+.classes-side {
+  display: flex;
+  flex-direction: column;
+  grid-area: side;
+  align-self: stretch;
+  gap: var(--shell-space-3);
+  min-inline-size: 0;
+}
+
+@container classes-page (inline-size >= 80rem) {
+  .classes-layout {
+    grid-template:
+      "rail main" auto
+      "side main" 1fr / 26rem minmax(0, 1fr);
+  }
+}
+
+/* The list stays in view and scrolls on its own. The main card stops at 1280px and the
+   three columns centre as a group. */
+@container classes-page (inline-size >= 128rem) {
+  .classes-layout {
+    grid-template: "rail main side" auto / 26rem minmax(0, 128rem) var(--classes-side-size, 30rem);
+    justify-content: center;
+  }
+
+  .classes-rail {
+    position: sticky;
+    inset-block-start: var(--shell-space-3);
+    max-block-size: calc(100dvh - 2 * var(--shell-space-3));
+
+    > .ve-night__shadow-big {
+      flex: 0 1 auto;
+      min-block-size: 0;
+    }
+
+    .cls__list {
+      flex: 1 1 auto;
+      min-block-size: 0;
+      max-block-size: none;
+      overflow-y: auto;
+    }
+  }
+}
+
+/* Pixels, since rem in a media query means the browser's 16px, not the page's 10px root. */
+@media (width > 1680px) {
+  .classes-layout {
+    --classes-side-size: 36rem;
+  }
+}
+
+/* ── Classes Page - Rail ─────────────────────────────────────────────────── */
+.classes-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-space-2);
+  min-inline-size: 0;
+
+  /* The homebrew manager buttons under the list. */
+  > .ve-flex-vh-center {
+    margin: 0;
+  }
+}
+
+.classes-rail-toggle {
+  display: none;
+}
+
+/* The source preset select under the list. It names the preset the filters match. */
+.classes-rail-footer {
+  display: flex;
+  flex-shrink: 0;
+
+  &:empty {
+    display: none;
+  }
+
+  > .classes-filter-preset {
+    inline-size: 100%;
+    background: var(--shell-color-surface);
+  }
+}
+
+/* Upstream tints the whole selected row blue with an inset shadow. */
+.classes-rail .ve-lst__row.list-multi-selected {
+  background: var(--shell-color-surface);
+  box-shadow: none;
+}
+
+/* The selected class is marked like the active nav item. */
+.classes-rail .ve-lst__row.list-multi-selected > .ve-lst__row-inner {
+  border-color: var(--shell-color-accent);
+  background: var(--shell-color-accent);
+  color: var(--shell-color-accent-text);
+
+  > span {
+    color: inherit;
+  }
+}
+
+/* ── Classes Page - Subclass Picker ──────────────────────────────────────── */
+/* Beside Compare Subclasses: the subclass select, then shuffle and show sources. */
+/* The group wraps on narrow screens instead of running past the card. */
+.classes-bar .detail-bar-group {
+  flex-wrap: wrap;
+  flex-shrink: 1;
+  min-inline-size: 0;
+}
+
+.classes-subclass-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--shell-space-1);
+  min-inline-size: 0;
+
+  > * {
+    margin: 0;
+  }
+
+  > .classes-subclass-select {
+    flex: 0 1 auto;
+    inline-size: auto;
+    min-inline-size: 0;
+    max-inline-size: 24rem;
+    background: var(--shell-color-surface);
+  }
+}
+
+/* ── Classes Page - Subclass Chips ───────────────────────────────────────── */
+/* Their own row between the bar and the class table. The badges themselves are styled in
+   controls.css and detail-bar.css. */
+.classes-subclass-row {
+  padding: var(--shell-panel-padding);
+
+  &:empty {
+    display: none;
+  }
+
+  > .classes-subclass-chips {
+    gap: var(--shell-space-1);
+    margin: 0;
+  }
+}
+
+/* ── Classes Page - Subclass Select All ──────────────────────────────────── */
+/* A text link after the last chip that switches between "Select all" and "Deselect all". */
+.classes-subclass-chips-end {
+  gap: var(--shell-space-2);
+  margin-inline-start: var(--shell-space-1);
+}
+
+.classes-subclass-select-all {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--shell-color-link);
+  font-size: var(--shell-font-size-small);
+  white-space: nowrap;
+
+  &:is(:hover, :focus-visible) {
+    color: oklch(from var(--shell-color-link) calc(l * var(--shell-hover-lightness)) calc(c * var(--shell-hover-chroma)) h);
+    text-decoration: underline;
+  }
+}
+
+/* ── Classes Page - Main Card ────────────────────────────────────────────── */
+/* Header, bar, class table and features form one card. The parts drop their own frames
+   and are split by dividers. */
+.classes-main {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+}
+
+.classes-main > :is(.classes-header, .classes-bar, .classes-subclass-row, #classtable, #pagecontent) {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.classes-main > :is(.classes-header, .classes-bar, .classes-subclass-row, #classtable) {
+  border-block-end: var(--shell-panel-border);
+}
+
+.classes-main .ve-cls-tbl {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* Long-form text reads best at a limited line length. The class table above keeps the
+   full width, and so does the subclass comparison, which caps each row itself. */
+.classes-main > #pagecontent:not(.classes-compare-on) {
+  max-inline-size: 90ch;
+}
+
+/* ── Classes Page - Class Table ──────────────────────────────────────────── */
+/* Each selected subclass adds columns, so the table scrolls sideways rather than squeezing
+   the features column. A named block heads each subclass's columns. */
+.classes-table {
+  --classes-subclass-color: oklch(48% 0.16 310deg);
+
+  overflow-x: auto;
+
+  .classes-table-features {
+    min-inline-size: 20rem;
+  }
+
+  .classes-table-subclass-name {
+    padding-block: var(--shell-space-1);
+    padding-inline: var(--shell-space-2);
+    border-block-end: 0.2rem solid var(--classes-subclass-color);
+    background: color-mix(in oklch, var(--classes-subclass-color), transparent 85%);
+    color: var(--classes-subclass-color);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* The spacer over the class's own columns. */
+  .classes-table-subclass-names > th:first-child {
+    background: none;
+  }
+}
+
+/* Gaps between the blocks keep neighbouring subclasses apart. */
+.classes-table-subclass-name + .classes-table-subclass-name {
+  border-inline-start: 0.2rem solid var(--shell-color-surface);
+}
+
+:root.ve-night-mode .classes-table {
+  --classes-subclass-color: oklch(74% 0.12 310deg);
+}
+
+/* ── Classes Page - Outline ──────────────────────────────────────────────── */
+/* Upstream sets the outline in small-caps Times. It uses the page's heading and link styles
+   instead, with the level in a column beside each feature. */
+/* Upstream already makes it sticky; this gives it the same offset as the book contents. */
+.cls-nav {
+  inset-block-start: var(--shell-space-3);
+  max-block-size: calc(100dvh - 2 * var(--shell-space-3));
+  font-family: var(--shell-font-body);
+  font-size: 1.3rem;
+  font-variant: normal;
+  font-weight: 400;
+}
+
+.cls-nav__head-inner {
+  align-items: baseline;
+  margin-block-end: var(--shell-space-2);
+  font-family: var(--shell-font-headings);
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.cls-nav__item {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: var(--shell-space-3);
+  max-block-size: none;
+  padding-inline-start: 0;
+  white-space: nowrap;
+
+  /* Standard class features take the link colour. Subclass and non-standard features keep
+     upstream's colour coding. */
+  &:not([class*="cls-nav__item--feature"]) {
+    color: var(--shell-color-link);
+
+    &:hover {
+      color: oklch(from var(--shell-color-link) calc(l * var(--shell-hover-lightness)) calc(c * var(--shell-hover-chroma)) h);
+    }
+  }
+
+  &:hover {
+    background: var(--shell-color-surface-raised);
+  }
+
+  /* Upstream's bullet would become a grid cell; it moves onto the name. */
+  &::before {
+    content: none;
+  }
+
+  /* A faint rule above the first feature of each level separates the levels. */
+  &:has(> .classes-outline-level:not(:empty)) {
+    margin-block-start: var(--shell-space-1);
+    padding-block-start: var(--shell-space-1);
+    border-block-start: 0.1rem solid color-mix(in oklch, var(--shell-color-border), transparent 50%);
+  }
+}
+
+.classes-outline-level {
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+  text-align: start;
+  font-variant-numeric: tabular-nums;
+}
+
+.classes-outline-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The class name heads the list, so it starts at the level column. */
+.cls-nav__item--depth-0 {
+  .classes-outline-level {
+    display: none;
+  }
+
+  .classes-outline-name {
+    grid-column: 1 / -1;
+    font-weight: 700;
+  }
+}
+
+.cls-nav__item--depth-2 .classes-outline-name {
+  padding-inline-start: var(--shell-space-4);
+
+  &::before {
+    content: "• ";
+  }
+}
+
+/* ── Classes Page - Hidden Controls ──────────────────────────────────────── */
+/* Book View isn't used here. Its JS still binds to the button, so it stays in the markup. */
+.classes-bar #btn-readmode {
+  display: none;
+}
+
+/* ── Classes Page - Subclass Comparison ──────────────────────────────────── */
+/* Compare Subclasses turns each level's subclass features into a strip of columns that
+   scrolls sideways, under tabs that bring a column into view. The table becomes blocks so
+   a strip can use the card's full width while the class text keeps its line length. */
+/* Upstream appends rows straight to the table, so they may or may not sit in a tbody. */
+:where(#pagecontent).classes-compare-on {
+  display: block;
+
+  > tbody {
+    display: block;
+  }
+
+  > tr,
+  > tbody > tr {
+    display: block;
+
+    > :is(td, th) {
+      display: block;
+      max-inline-size: 90ch;
+    }
+
+    &.classes-compare-run > td {
+      max-inline-size: none;
+    }
+  }
+}
+
+/* Author styles set display on these, which would beat the browser's own [hidden] rule. */
+:is(.classes-compare-run, .classes-compare-col, .classes-compare-tab)[hidden] {
+  display: none;
+}
+
+.classes-compare-tabs {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--shell-space-1);
+  margin-block: var(--shell-space-3);
+  border-block-end: var(--shell-panel-border);
+  background: var(--shell-color-surface);
+}
+
+.classes-compare-tab {
+  block-size: var(--shell-badge-block-size);
+  font-size: var(--shell-font-size-small);
+
+  /* The column nearest the strip's start. */
+  &[aria-selected="true"] {
+    background: var(--shell-color-accent);
+    color: var(--shell-color-accent-text);
+  }
+}
+
+/* Positioned so a column's offsetLeft is measured from the strip, which the tabs scroll by. */
+.classes-compare-strip {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--shell-space-5);
+  padding-block-end: var(--shell-space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+/* Narrower than the strip, so the next column peeks in and shows there's more to scroll. */
+.classes-compare-col {
+  flex: 0 0 min(60ch, 88%);
+  scroll-snap-align: start;
+}
+
+.classes-compare-col:not([hidden]) ~ .classes-compare-col {
+  padding-inline-start: var(--shell-space-5);
+  border-inline-start: var(--shell-panel-border);
+}
+
+/* One subclass needs no tabs or scrolling. */
+.classes-compare-run[data-count="1"] {
+  .classes-compare-tabs {
+    display: none;
+  }
+
+  .classes-compare-col {
+    flex-basis: 100%;
+    max-inline-size: 90ch;
+  }
+}
+
+/* ── Classes Page - Narrow ───────────────────────────────────────────────── */
+/* After a pick the list shrinks to the selected class. The toggle brings back the search
+   and the full list. The bar's buttons wrap onto rows that all start at the left. */
+@container classes-page (inline-size < 80rem) {
+  .classes-rail-toggle {
+    display: flex;
+  }
+
+  .classes-bar .detail-bar-actions {
+    justify-content: flex-start;
+  }
+
+  .classes-rail:not(.classes-rail-open) {
+    > .ve-flex-vh-center,
+    .classes-rail-footer,
+    .ve-lst__form-top {
+      display: none;
+    }
+
+    /* Upstream's ve-flex utilities set display with !important, so these collapse instead. */
+    :is(#filtertools, .ve-lst__row:not(.list-multi-selected)) {
+      block-size: 0;
+      overflow: hidden;
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  /* The list runs its full length rather than scrolling in a box, so the preset select
+     follows the last class instead of staying pinned under the box. */
+  .classes-rail .cls__list {
+    max-block-size: none;
+  }
+}

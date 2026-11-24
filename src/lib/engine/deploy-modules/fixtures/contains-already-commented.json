@@ -1,0 +1,14 @@
+{
+  "name": "contains-already-commented",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "contains": "page: \"tables.html\""
+    }
+  ],
+  "input": "\t// NavBar.x({page: \"tables.html\"});\n",
+  "expected": "\t// NavBar.x({page: \"tables.html\"});\n",
+  "status": "applied"
+}

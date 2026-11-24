@@ -1,0 +1,51 @@
+{
+  "title": "Item prices",
+  "description": "Writes the prices you set under Shops → Prices into item data on deploy, so the Items page, item view, shops and loot show them. In the item view, hovering a cost shows its DM range and the original cost.",
+  "order": 82,
+  "defaultEnabled": true,
+  "card": "Items page",
+  "link": {
+    "href": "/shops/prices",
+    "label": "Edit prices"
+  },
+  "entries": [
+    {
+      "type": "prices",
+      "description": "Official items",
+      "source": "{data}/content/item-prices.json",
+      "target": "data/items.json"
+    },
+    {
+      "type": "prices",
+      "description": "Base items",
+      "source": "{data}/content/item-prices.json",
+      "target": "data/items-base.json"
+    },
+    {
+      "type": "prices",
+      "description": "Magic variants",
+      "source": "{data}/content/item-prices.json",
+      "target": "data/magicvariants.json"
+    },
+    {
+      "type": "patch",
+      "description": "DM range and original cost on hover in the item view",
+      "target": "js/render.js",
+      "patches": [
+        {
+          "note": "Add Renderer.item.getHbmCostHtml",
+          "insertFile": "item-prices-hover.js",
+          "position": "end",
+          "marker": "HBM:item-prices",
+          "allowMissing": false
+        },
+        {
+          "note": "Use it for the item view's cost",
+          "find": "${[Parser.itemValueToFullMultiCurrency(item, {styleHint}), Parser.itemWeightToFull(item)]",
+          "replace": "${[Renderer.item.getHbmCostHtml(item, {styleHint}), Parser.itemWeightToFull(item)]",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

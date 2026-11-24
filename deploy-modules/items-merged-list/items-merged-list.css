@@ -1,0 +1,10 @@
+/* Items page: one full-width list instead of side-by-side mundane/magic columns */
+.style-switch__wide #listcontainer.hm-itm__single-list.ve-itm__wrp-lists {
+  flex-flow: column !important;
+}
+
+.style-switch__wide #listcontainer.hm-itm__single-list .ve-itm__wrp-list--mundane {
+  min-width: 100%;
+  max-width: 100%;
+  margin-right: 0;
+}

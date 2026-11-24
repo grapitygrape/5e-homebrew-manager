@@ -1,0 +1,51 @@
+{
+  "title": "Generate Loot tab",
+  "description": "Adds a Generate Loot tab to the front of the Loot Generator page: pick a challenge rating, gold range, items by rarity and type, and spell scrolls.",
+  "order": 65,
+  "defaultEnabled": true,
+  "entries": [
+    {
+      "type": "copy",
+      "description": "Generate Loot tab",
+      "source": "lootgen-generator-generateloot.js",
+      "target": "js/lootgen/lootgen-generator-generateloot.js"
+    },
+    {
+      "type": "copy",
+      "description": "Generate Loot rolling rules",
+      "source": "lootgen-generateloot-logic.js",
+      "target": "js/lootgen/lootgen-generateloot-logic.js"
+    },
+    {
+      "type": "patch",
+      "description": "Make Generate Loot the first Loot Generator tab",
+      "target": "js/lootgen/lootgen-ui.js",
+      "patches": [
+        {
+          "note": "Import the generator",
+          "find": "import {LootGenUiOutputManager} from \"./lootgen-outputmanager.js\";",
+          "replace": "import {LootGenUiOutputManager} from \"./lootgen-outputmanager.js\";\nimport {LootGenGeneratorGenerateLoot} from \"./lootgen-generator-generateloot.js\";",
+          "allowMissing": false
+        },
+        {
+          "note": "Create the generator",
+          "find": "\t\tthis._generatorFindTreasure24 = new LootGenGeneratorFindTreasure24({",
+          "replace": "\t\tthis._generatorGenerateLoot = new LootGenGeneratorGenerateLoot({\n\t\t\tClsLootGenOutput: this._ClsLootGenOutput,\n\t\t\tstateManager: this._stateManager,\n\t\t\toutputManager: this._outputManager,\n\t\t\tdataManager: this._dataManager,\n\t\t\trendererWrapped: this._rendererWrapped,\n\t\t});\n\n\t\tthis._generatorFindTreasure24 = new LootGenGeneratorFindTreasure24({",
+          "allowMissing": false
+        },
+        {
+          "note": "Register it first",
+          "find": "\t\tthis._generators = [",
+          "replace": "\t\tthis._generators = [\n\t\t\tthis._generatorGenerateLoot,",
+          "allowMissing": false
+        },
+        {
+          "note": "Add its tab first",
+          "find": "\t\t\t\t[this._generatorFindTreasure24.identifier]: new TabUiUtil.TabMeta({",
+          "replace": "\t\t\t\t[this._generatorGenerateLoot.identifier]: new TabUiUtil.TabMeta({\n\t\t\t\t\tname: \"Generate Loot\",\n\t\t\t\t\thasBorder: true,\n\t\t\t\t\thasBackground: true,\n\t\t\t\t}),\n\t\t\t\t[this._generatorFindTreasure24.identifier]: new TabUiUtil.TabMeta({",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,346 @@
+/* ── Page Frame - Base ───────────────────────────────────────────────────── */
+.viewport-wrapper {
+  inline-size: 100%;
+}
+
+.container {
+  inline-size: 100%;
+  max-inline-size: none;
+  padding-inline: var(--shell-space-3);
+  /* Changelog entries hold long unbroken names that widen the page on a phone. */
+  overflow-wrap: break-word;
+}
+
+/* ── Page Frame - Homebrew Manager Toolbar ───────────────────────────────── */
+/* Upstream's toolbar rows never wrap, so they run off the side below about 900px. */
+#manager > :first-child,
+#manager > :first-child > .ve-flex-v-center {
+  flex-wrap: wrap;
+  row-gap: var(--shell-space-2);
+}
+
+/* ── Page Frame - Rules ──────────────────────────────────────────────────── */
+hr {
+  border-block-start-color: var(--shell-color-border);
+}
+
+/* ── Page Frame - Wide Tables ────────────────────────────────────────────── */
+/* This table can't shrink to a phone, so it scrolls instead of widening the page. */
+#msbcr {
+  display: block;
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+/* ── App Bar - Base ──────────────────────────────────────────────────────── */
+.app-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--shell-space-1) var(--shell-space-4);
+  min-block-size: var(--shell-bar-block-size);
+  padding-inline: var(--shell-space-3);
+  background: var(--shell-color-bar);
+  color: var(--shell-color-bar-text);
+  box-shadow: 0 0.1rem 0.4rem oklch(0% 0 0deg / 40%);
+}
+
+/* ── App Bar - Title ─────────────────────────────────────────────────────── */
+.app-bar-title {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  min-block-size: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+
+  .page__title {
+    display: block;
+    margin: 0;
+    font-size: var(--shell-font-size-title);
+    line-height: var(--shell-bar-block-size);
+    white-space: nowrap;
+    max-width: 24rem;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+
+    &::after {
+      content: none;
+    }
+  }
+
+  /* The how-to-use sentence is only useful once, so it stays out of the bar. */
+  .page__subtitle {
+    display: none;
+  }
+}
+
+/* ── App Bar - Navigation ────────────────────────────────────────────────── */
+.app-bar-nav {
+  position: static;
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--shell-space-2);
+  inline-size: auto;
+  min-inline-size: min(100%, 28.8rem);
+  min-block-size: 0;
+  padding: 0;
+
+  .page__nav-inner {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--shell-space-1);
+    inline-size: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .page__btn-nav-root {
+    float: none;
+    margin: 0;
+
+    /* Same height as the search box and the page's buttons, on whole pixels so it stays sharp when zoomed. */
+    > a {
+      display: flex;
+      align-items: center;
+      gap: var(--shell-space-2);
+      block-size: var(--shell-control-block-size);
+      padding-block: 0;
+      padding-inline: var(--shell-space-3);
+      border: 0;
+      border-radius: var(--shell-radius-small);
+      background: none;
+      color: var(--shell-color-bar-text);
+      font-size: var(--shell-font-size-body);
+      line-height: 1;
+    }
+
+    /* Stays in the bar's own tone, so light mode doesn't get a white pill on a dark bar. */
+    &.open > a,
+    > a:where(:hover, :focus-visible) {
+      background: color-mix(in oklch, var(--shell-color-bar), var(--shell-color-bar-text) 15%);
+      color: var(--shell-color-bar-text);
+    }
+
+    &.ve-active > a {
+      background: var(--shell-color-accent);
+      color: var(--shell-color-accent-text);
+    }
+  }
+
+  /* Framed in controls.css. */
+  .page__btn-toggle-nav {
+    inline-size: auto;
+    margin: 0;
+    background: var(--shell-color-surface-raised);
+    color: var(--shell-color-text);
+  }
+}
+
+/* ── App Bar - Menus ─────────────────────────────────────────────────────── */
+/* Menus look the same everywhere (menus.css). Here they hang from the bar's bottom
+   edge, not the middle of the button, with their text lined up under the button's. */
+.app-bar-nav .ve-dropdown-menu {
+  --menu-inset: calc(var(--menu-padding) + 0.1rem);
+}
+
+.app-bar-nav .ve-dropdown-menu--top {
+  inset-block-start: calc(100% + (var(--shell-bar-block-size) - var(--shell-control-block-size)) / 2);
+  inset-inline-start: calc(-1 * var(--menu-inset));
+}
+
+/* Upstream drops side menus below their toggle under 1200px, so this only applies above it. */
+@media (width > 75rem) {
+  .app-bar-nav .ve-dropdown-menu--side {
+    inset-block-start: calc(-1 * var(--menu-inset));
+  }
+}
+
+/* ── App Bar - Search ────────────────────────────────────────────────────── */
+/* The frame (controls.css) is on the wrapper, so the input and its button share one outline and height. */
+.app-bar-nav .omni__wrp-input {
+  overflow: hidden;
+  background: var(--shell-color-surface);
+
+  :is(.omni__input, .omni__submit) {
+    block-size: 100%;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .omni__submit {
+    color: var(--shell-color-text-muted);
+  }
+
+  /* Upstream places the clear button by pixel for its 32px input; this centres it in ours. */
+  .omni__btn-clear {
+    inset-block-start: 50%;
+    inset-inline-end: calc(var(--shell-control-block-size) + var(--shell-space-2));
+    translate: 0 -50%;
+  }
+
+  :is(.omni__input, .omni__submit):focus-visible {
+    outline-offset: -0.2rem;
+  }
+}
+
+.app-bar-nav .page__nav-inner > :has(.omni__input) {
+  flex: 1 1 22.4rem;
+  order: 99;
+  max-inline-size: 44.8rem;
+  margin-inline-start: auto;
+}
+
+/* ── App Bar - Search Results ────────────────────────────────────────────── */
+/* Upstream puts the results wrapper in the nav row as a full-width item, which squeezed
+   the links onto two lines. Here it's out of the flow, hanging from the bar's bottom
+   edge under the search box. The panel itself is a menu surface (menus.css). */
+.app-bar-nav .omni__wrp-output {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: var(--shell-space-3);
+  /* The bar is the containing block, so this is its width, without the scrollbar 100vw counts. */
+  inline-size: min(56rem, 100% - 2 * var(--shell-space-3));
+}
+
+/* Sized to its content, so a short result list doesn't stretch to the cap. */
+.app-bar-nav .omni__output {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: var(--menu-padding);
+  inline-size: max-content;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  max-block-size: calc(100dvh - var(--shell-bar-block-size) - var(--shell-space-4));
+  overflow-y: auto;
+
+  /* Smaller filter buttons than the bars use, so they stay on one line. */
+  --shell-control-block-size: 2.2rem;
+
+  .ve-btn:not(:has(> .glyphicon:only-child)) {
+    padding-inline: var(--shell-space-2);
+  }
+
+  /* Filters on top, set off from the results the way a divider sets off menu groups. */
+  > :first-child {
+    flex-wrap: wrap;
+    gap: var(--shell-space-2);
+    margin: 0;
+    padding: var(--shell-space-1);
+    padding-block-end: var(--menu-padding);
+    border-block-end: 0.1rem solid var(--shell-color-border);
+
+    > * {
+      gap: var(--shell-space-2);
+      margin: 0;
+    }
+  }
+
+  /* Two columns shared by every row, so the sources line up just past the longest name
+     instead of at the far edge. */
+  > :last-child {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) auto;
+    gap: var(--menu-item-gap);
+
+    > * {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* Result rows read as menu items: same inset and hover, no stripes, but tighter. */
+.app-bar-nav .omni__row-result {
+  display: grid;
+  grid-template-columns: subgrid;
+  column-gap: var(--shell-space-4);
+  align-items: center;
+  padding-block: var(--shell-space-1);
+  padding-inline: var(--shell-space-2);
+  border-radius: var(--shell-radius-small);
+  background: none;
+  line-height: 1.6rem;
+
+  > a:first-child {
+    min-inline-size: 0;
+    color: var(--shell-color-text);
+    text-decoration: none;
+  }
+
+  &:is(:hover, :focus-within) {
+    background: var(--shell-color-control-hover);
+  }
+}
+
+.app-bar-nav .omni__wrp-paginate {
+  align-items: center;
+  padding-block: var(--shell-space-1);
+  padding-inline: var(--shell-space-3);
+  color: var(--shell-color-text-muted);
+}
+
+/* ── App Bar - Responsive ────────────────────────────────────────────────── */
+@media (width <= 61.9375rem) {
+  /* The Menu button lives inside the nav, after the title. Flattening the nav lets one
+     row read Menu, title, search; the search wraps to its own line below 20rem. */
+  .app-bar {
+    column-gap: var(--shell-space-3);
+    padding-block: var(--shell-space-2);
+  }
+
+  .app-bar-nav,
+  .app-bar-nav .page__nav-inner {
+    display: contents;
+  }
+
+  .app-bar-nav {
+    .page__btn-toggle-nav {
+      order: -2;
+    }
+
+    .page__nav-inner > :has(.omni__input) {
+      flex: 1 1 0;
+      order: 0;
+      min-inline-size: min(100%, 20rem);
+      max-inline-size: none;
+      margin: 0;
+    }
+
+    /* The links Menu reveals, one per line under the row. */
+    .page__nav-inner > li {
+      flex-basis: 100%;
+      order: 1;
+    }
+
+    /* A long menu has to push the page down, not float over it. */
+    .ve-dropdown-menu {
+      position: static;
+      float: none;
+      inline-size: 100%;
+      max-block-size: none;
+      box-shadow: none;
+    }
+  }
+
+  .app-bar-title {
+    flex-shrink: 1;
+    order: -1;
+    min-inline-size: 0;
+
+    .page__title {
+      font-size: 2.2rem;
+      line-height: var(--shell-control-block-size);
+    }
+  }
+}

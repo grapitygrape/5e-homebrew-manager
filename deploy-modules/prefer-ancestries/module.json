@@ -1,0 +1,267 @@
+{
+  "title": "Species name",
+  "description": "Calls species something else across the site: the menu, the species page and its filters, spell pages, prerequisites and search. Homebrew and book text keep their own wording.",
+  "order": 30,
+  "defaultEnabled": true,
+  "options": [
+    {
+      "id": "singular",
+      "label": "Singular",
+      "kind": "text",
+      "default": "Ancestry"
+    },
+    {
+      "id": "plural",
+      "label": "Plural",
+      "kind": "text",
+      "default": "Ancestries"
+    }
+  ],
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Menu",
+      "target": "js/navigation.js",
+      "patches": [
+        {
+          "note": "Menu link",
+          "find": "aText: \"Species\"",
+          "replace": "aText: \"{option:plural}\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Species page",
+      "target": "races.html",
+      "patches": [
+        {
+          "note": "Page title",
+          "find": "<title>Species - 5etools</title>",
+          "replace": "<title>{option:plural} - 5etools</title>",
+          "allowMissing": true
+        },
+        {
+          "note": "Page heading",
+          "find": "id=\"page__title\">Species</h1>",
+          "replace": "id=\"page__title\">{option:plural}</h1>",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Home page",
+      "target": "index.html",
+      "patches": [
+        {
+          "note": "Home page tile (upstream or Reskin)",
+          "find": "home__lbl-page\">(?:Species|Ancestries)</h4>",
+          "replace": "home__lbl-page\">{option:plural}</h4>",
+          "isRegex": true,
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Species page script",
+      "target": "js/races.js",
+      "patches": [
+        {
+          "note": "Book view singular",
+          "find": "nameSingular: \"species\"",
+          "replace": "nameSingular: \"{option:singular:lower}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "Book view plural",
+          "find": "namePlural: \"species\"",
+          "replace": "namePlural: \"{option:plural:lower}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "Book view title",
+          "find": "pageTitle: \"Species Book View\"",
+          "replace": "pageTitle: \"{option:singular} Book View\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Species filters",
+      "target": "js/filter-races.js",
+      "patches": [
+        {
+          "note": "Trait & base/key filter labels",
+          "find": "\"(Monstrous|NPC|Uncommon|Base|Key) Species\"",
+          "replace": "\"$1 {option:singular}\"",
+          "isRegex": true,
+          "allowMissing": true
+        },
+        {
+          "note": "Ability score filter",
+          "find": "(Including Subspecies)",
+          "replace": "(Including Sub{option:singular:lower})",
+          "allowMissing": true
+        },
+        {
+          "note": "Filter window title",
+          "find": "modalTitle: `Species`",
+          "replace": "modalTitle: `{option:plural}`",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Spell filter",
+      "target": "js/filter-spells.js",
+      "patches": [
+        {
+          "note": "Filter header",
+          "find": "header: \"Species\"",
+          "replace": "header: \"{option:plural}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "No subspecies",
+          "find": "\"(No Subspecies)\"",
+          "replace": "\"(No Sub{option:singular:lower})\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Spell rendering",
+      "target": "js/render-spells.js",
+      "patches": [
+        {
+          "note": "Settings label",
+          "find": "name: \"Spell Sources: Show Species\"",
+          "replace": "name: \"Spell Sources: Show {option:plural}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "Settings help text",
+          "find": "help: `Whether or not \"Species\" should be shown for a spell.`",
+          "replace": "help: `Whether or not \"{option:plural}\" should be shown for a spell.`",
+          "allowMissing": true
+        },
+        {
+          "note": "Spell source section title",
+          "find": "title: \"Species\", propSpell: \"races\"",
+          "replace": "title: \"{option:plural}\", propSpell: \"races\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Prerequisite filter",
+      "target": "js/filter-common.js",
+      "patches": [
+        {
+          "note": "Prerequisite filter item",
+          "find": "PREREQ_FILTER_ITEMS = [\"Ability\", \"Species\"",
+          "replace": "PREREQ_FILTER_ITEMS = [\"Ability\", \"{option:singular}\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Item prerequisites",
+      "target": "js/filter-items.js",
+      "patches": [
+        {
+          "note": "Item prerequisite text",
+          "find": "`Species: ${val",
+          "replace": "`{option:singular}: ${val",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Names used across the site",
+      "target": "js/parser.js",
+      "patches": [
+        {
+          "note": "Search category",
+          "find": "Parser.CAT_ID_TO_FULL[Parser.CAT_ID_RACE] = \"Species\"",
+          "replace": "Parser.CAT_ID_TO_FULL[Parser.CAT_ID_RACE] = \"{option:singular}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "Display name",
+          "find": "\"race\": \"Species\"",
+          "replace": "\"race\": \"{option:singular}\"",
+          "allowMissing": true
+        },
+        {
+          "note": "Sub display name",
+          "find": "\"subrace\": \"Subspecies\"",
+          "replace": "\"subrace\": \"Sub{option:singular:lower}\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Page name",
+      "target": "js/utils.js",
+      "patches": [
+        {
+          "note": "Page name",
+          "find": "UrlUtil.PG_TO_NAME[UrlUtil.PG_RACES] = \"Species\"",
+          "replace": "UrlUtil.PG_TO_NAME[UrlUtil.PG_RACES] = \"{option:plural}\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Species picker",
+      "target": "js/utils-ui.js",
+      "patches": [
+        {
+          "note": "Search title",
+          "find": "\"Select Species\"",
+          "replace": "\"Select {option:singular}\"",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Stat generator",
+      "target": "js/statgen/statgen-ui-comp-asi.js",
+      "patches": [
+        {
+          "note": "Point buy panel",
+          "find": "title: \"Species\", wrpRows",
+          "replace": "title: \"{option:singular}\", wrpRows",
+          "allowMissing": true
+        }
+      ]
+    },
+    {
+      "type": "patch",
+      "description": "Stat generator",
+      "target": "js/statgen/statgen-ui-comp-levelone-race.js",
+      "patches": [
+        {
+          "note": "Title and short title",
+          "find": "(_title(?:Short)?) = \"Species\"",
+          "replace": "$1 = \"{option:singular}\"",
+          "isRegex": true,
+          "allowMissing": true
+        }
+      ]
+    }
+  ]
+}

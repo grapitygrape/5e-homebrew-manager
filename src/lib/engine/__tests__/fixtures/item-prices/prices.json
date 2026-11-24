@@ -1,0 +1,10 @@
+{
+  "prices": [
+    { "name": "Potion of Healing", "cost": 50 },
+    { "name": "Bag of Holding", "source": ["DMG", "*"], "cost": 400, "min": 300, "max": 600 },
+    { "name": "Bag of Holding", "source": "XDMG", "cost": 450.5 },
+    { "name": "+1 Weapon", "source": ["*"], "cost": 1000, "max": 1500 },
+    { "name": "Rope of Climbing", "source": ["DMG"], "cost": 2000 },
+    { "name": "Never Matches", "source": ["XDMG", "*"], "cost": 1 }
+  ]
+}

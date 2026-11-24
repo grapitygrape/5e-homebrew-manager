@@ -1,0 +1,122 @@
+/* ── Icons - Font ────────────────────────────────────────────────────────── */
+/* Upstream builds its icons as Glyphicons in JS. Pointing that class at Font Awesome's solid
+   face swaps every icon without touching upstream's code. Codepoints come from css/fontawesome.css. */
+@font-face {
+  font-family: "Shell Icons";
+  font-weight: 900;
+  font-display: block;
+  src: url("../fonts/fontawesome/fa-solid-900.woff2") format("woff2");
+}
+
+.glyphicon {
+  inset-block-start: 0;
+  font-family: "Shell Icons", "Glyphicons Halflings", monospace;
+  font-weight: 900;
+}
+
+/* ── Icons - Glyphs ──────────────────────────────────────────────────────── */
+/* Every Glyphicon that js/, the templates and the pages use. One not listed here would show
+   whatever Font Awesome has at Glyphicons' codepoint, so add any new one. */
+.glyphicon-adjust::before { content: "\f042"; } /* circle-half-stroke */
+.glyphicon-alert::before { content: "\f071"; } /* triangle-exclamation */
+.glyphicon-arrow-down::before { content: "\f063"; }
+.glyphicon-arrow-left::before { content: "\f060"; }
+.glyphicon-arrow-right::before { content: "\f061"; }
+.glyphicon-arrow-up::before { content: "\f062"; }
+.glyphicon-book::before { content: "\f02d"; }
+.glyphicon-bookmark::before { content: "\f02e"; } /* shell-only class: source filter summary shown */
+.glyphicon-bookmark-slash::before { content: "\e0c2"; } /* shell-only class: source filter summary hidden */
+.glyphicon-calendar::before { content: "\f133"; }
+.glyphicon-check::before { content: "\f14a"; } /* square-check */
+.glyphicon-chevron-down::before { content: "\f078"; }
+.glyphicon-chevron-left::before { content: "\f053"; }
+.glyphicon-chevron-right::before { content: "\f054"; }
+.glyphicon-chevron-up::before { content: "\f077"; }
+.glyphicon-cog::before { content: "\f013"; } /* gear */
+.glyphicon-copy::before { content: "\f0c5"; }
+.glyphicon-dice::before { content: "\f522"; } /* dice; ours, not a Glyphicon: the dice roller toggle */
+.glyphicon-download::before { content: "\f019"; }
+.glyphicon-download-alt::before { content: "\f019"; }
+.glyphicon-duplicate::before { content: "\f24d"; } /* clone */
+.glyphicon-equalizer::before { content: "\f1de"; } /* sliders */
+.glyphicon-eye-close::before { content: "\f070"; } /* eye-slash */
+.glyphicon-eye-open::before { content: "\f06e"; } /* eye */
+.glyphicon-file::before { content: "\f15b"; }
+.glyphicon-filter::before { content: "\f0b0"; }
+.glyphicon-filter-eye::before { content: "\f0b0"; } /* filter; shell-only class: filter summary shown */
+.glyphicon-filter-eye-slash::before { content: "\e17d"; } /* filter-slash; shell-only class: filter summary hidden */
+.glyphicon-filter-reset::before { content: "\e17b"; } /* filter-circle-xmark; shell-only class for filter reset buttons */
+.glyphicon-flag::before { content: "\f024"; }
+.glyphicon-floppy-disk::before { content: "\f0c7"; }
+.glyphicon-folder-open::before { content: "\f07c"; }
+.glyphicon-forward::before { content: "\f04e"; }
+.glyphicon-fullscreen::before { content: "\f065"; } /* expand */
+.glyphicon-glass::before { content: "\f0fc"; } /* beer-mug-empty; upstream's homebrew mark, and FA's glass looks like the filter funnel */
+.glyphicon-heart::before { content: "\f004"; }
+.glyphicon-info-sign::before { content: "\f05a"; } /* circle-info */
+.glyphicon-link::before { content: "\f0c1"; }
+.glyphicon-list-alt::before { content: "\f022"; } /* rectangle-list */
+.glyphicon-lock::before { content: "\f023"; }
+.glyphicon-magnet::before { content: "\f076"; }
+.glyphicon-menu-down::before { content: "\f0d7"; } /* caret-down */
+.glyphicon-minus::before { content: "\f068"; }
+.glyphicon-modal-window::before { content: "\f2d2"; } /* window-restore */
+.glyphicon-move::before { content: "\f0b2"; } /* up-down-left-right */
+.glyphicon-new-window::before { content: "\f08e"; } /* arrow-up-right-from-square */
+.glyphicon-ok::before { content: "\f00c"; } /* check */
+.glyphicon-option-vertical::before { content: "\f142"; } /* ellipsis-vertical */
+.glyphicon-pause::before { content: "\f04c"; }
+.glyphicon-pencil::before { content: "\f303"; }
+.glyphicon-picture::before { content: "\f03e"; } /* image */
+.glyphicon-play::before { content: "\f04b"; }
+.glyphicon-plus::before { content: "\2b"; }
+.glyphicon-print::before { content: "\f02f"; }
+.glyphicon-pushpin::before { content: "\f08d"; } /* thumbtack */
+.glyphicon-pushpin-slash::before { content: "\e68f"; } /* thumbtack-slash; shell-only class, no Glyphicon equivalent */
+.glyphicon-random::before { content: "\f074"; } /* shuffle */
+.glyphicon-record::before { content: "\f192"; } /* circle-dot */
+.glyphicon-refresh::before { content: "\f021"; } /* arrows-rotate */
+.glyphicon-remove::before { content: "\f00d"; } /* xmark */
+.glyphicon-repeat::before { content: "\f01e"; } /* arrow-rotate-right */
+.glyphicon-resize-small::before { content: "\f066"; } /* compress */
+.glyphicon-save::before { content: "\f0c7"; } /* floppy-disk */
+.glyphicon-saved::before { content: "\f058"; } /* circle-check */
+.glyphicon-search::before { content: "\f002"; } /* magnifying-glass */
+.glyphicon-send::before { content: "\f1d8"; } /* paper-plane */
+.glyphicon-share::before { content: "\f14d"; } /* share-from-square */
+.glyphicon-sidebar::before { content: "\e24e"; } /* sidebar; ours, not a Glyphicon: the books index toggle */
+.glyphicon-signal::before { content: "\f012"; }
+.glyphicon-sort-by-alphabet::before { content: "\f15d"; } /* arrow-down-a-z */
+.glyphicon-sort-by-order::before { content: "\f162"; } /* arrow-down-1-9 */
+.glyphicon-star-empty::before { content: "\f005"; } /* star */
+.glyphicon-stats::before { content: "\e0e3"; } /* chart-column */
+.glyphicon-step-backward::before { content: "\f048"; } /* backward-step */
+.glyphicon-step-forward::before { content: "\f051"; } /* forward-step */
+.glyphicon-stop::before { content: "\f04d"; }
+.glyphicon-th-list::before { content: "\f03a"; } /* list */
+.glyphicon-thumbs-up::before { content: "\f164"; }
+.glyphicon-time::before { content: "\f017"; } /* clock */
+.glyphicon-toggle-off::before { content: "\f204"; } /* toggle-off; shell-only class */
+.glyphicon-toggle-on::before { content: "\f205"; } /* toggle-on; shell-only class */
+.glyphicon-trash::before { content: "\f2ed"; } /* trash-can */
+.glyphicon-triangle-right::before { content: "\f0da"; } /* caret-right */
+.glyphicon-upload::before { content: "\f093"; }
+.glyphicon-user::before { content: "\f007"; }
+.glyphicon-volume-up::before { content: "\f028"; } /* volume-high */
+.glyphicon-wrench::before { content: "\f0ad"; }
+.glyphicon-zoom-in::before { content: "\f00e"; } /* magnifying-glass-plus */
+.glyphicon-zoom-out::before { content: "\f010"; } /* magnifying-glass-minus */
+
+/* ── Icons - Filter Summary Toggle ───────────────────────────────────────── */
+/* Hovering shows what a click will do: the icon swaps to the other state. Touch screens
+   keep :hover after a tap, which would show the wrong state, so they don't swap. */
+@media (hover: hover) {
+  .ve-btn:hover > .glyphicon-filter-eye::before { content: "\e17d"; } /* filter-slash */
+  .ve-btn:hover > .glyphicon-filter-eye-slash::before { content: "\f0b0"; } /* filter */
+}
+
+/* ── Icons - Send to Foundry ─────────────────────────────────────────────── */
+/* Every Send to Foundry button marks itself with the title colour, wherever it sits. */
+.glyphicon-send {
+  color: var(--shell-color-title);
+}

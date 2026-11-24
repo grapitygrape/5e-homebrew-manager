@@ -1,0 +1,153 @@
+/* ── Cards - Frame ──────────────────────────────────────────────────────────── */
+/* Lists, the class sidebar, the outline and the book contents get the same frame as the
+   entry panels, so every block on a page is one kind of card. */
+:is(.list-pane, #listcontainer > .ve-night__shadow-big, .cls-nav, .classes-header, .book-contents .contents) {
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+  box-shadow: none;
+}
+
+.list-pane {
+  min-block-size: 0;
+}
+
+/* The class list stacks its parts with no gap of its own. */
+#listcontainer > .ve-night__shadow-big {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-space-2);
+}
+
+/* ── Cards - Class Header ───────────────────────────────────────────────────── */
+/* Spans above both lower class columns with the class name on the start side and the source
+   chip and Send to Foundry button on the end side. */
+.classes-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--shell-space-3);
+  margin-block-start: var(--shell-space-4);
+
+  &:empty {
+    display: none;
+  }
+
+  .ve-stats__h-name {
+    color: var(--shell-color-title);
+    line-height: 1;
+  }
+}
+
+/* The list name, shown after the class's own name when the two differ. */
+.classes-header-name {
+  flex-wrap: wrap;
+  column-gap: var(--shell-space-3);
+}
+
+.classes-header-alt-name {
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-title);
+  font-family: var(--shell-font-titles);
+  line-height: 1;
+}
+
+.classes-header-rhs {
+  display: flex;
+  align-items: center;
+  gap: var(--shell-space-2);
+  margin-inline-start: auto;
+}
+
+/* ── Cards - Attached Header ────────────────────────────────────────────────── */
+/* A detail bar is the header of the card it drives: same frame and fill, and one divider
+   between them instead of a gap and two borders. */
+:is(#stat-tabs, .classes-bar) {
+  margin-block-end: 0;
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  border-start-start-radius: var(--shell-panel-radius);
+  border-start-end-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+}
+
+/* Cancels the detail pane's gap, so header and body touch. */
+#stat-tabs {
+  margin-block-end: -0.6rem;
+  padding-block-end: 0.6rem;
+  border-bottom: none;
+}
+
+:is(#stat-tabs + .wrp-stats-table > .ve-stats, .classes-bar + #pagecontent) {
+  border-block-start: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+/* ── Cards - Header Controls ────────────────────────────────────────────────── */
+/* Collapse toggles and similar text buttons in card headers: one size and a muted colour,
+   so they read as controls of the card rather than part of its title. */
+/* Upstream also fades section toggles to 30% opacity, which made them darker than the
+   page numbers beside them. */
+:is(.ve-rd__h-toggle, .cls-side__btn-toggle, .cls-nav__disp-toggle) {
+  color: var(--shell-color-text-muted);
+  opacity: 1;
+  font-family: inherit;
+  font-size: var(--shell-font-size-small);
+  font-weight: 400;
+
+  &:hover {
+    color: var(--shell-color-text);
+  }
+}
+
+/* The outline's header already sits on the card's own frame. */
+.cls-nav__hr {
+  display: none;
+}
+
+/* ── Cards - Pinned List ────────────────────────────────────────────────────── */
+/* The saved-list controls (built in utils-list.js) and the pinned list under them form one
+   card: the list's name and save buttons are its header. */
+.sublist-save-bar {
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  border-block-end: 0;
+  border-start-start-radius: var(--shell-panel-radius);
+  border-start-end-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+
+  > * {
+    margin: 0;
+  }
+
+  /* Framed in controls.css. */
+  input {
+    background: var(--shell-color-surface);
+  }
+
+  /* A step toward the text colour, so "New list" reads more clearly than upstream's grey. */
+  input::placeholder {
+    color: color-mix(in oklch, var(--shell-color-text-muted), var(--shell-color-text) 35%);
+    opacity: 1;
+  }
+}
+
+/* Cancels the detail pane's gap, so header and body touch. */
+#sublistcontainer.sublist--visible {
+  margin-block-start: calc(-1 * var(--shell-space-2));
+  padding: var(--shell-panel-padding);
+  border: var(--shell-panel-border);
+  border-block-start: 0;
+  border-end-start-radius: var(--shell-panel-radius);
+  border-end-end-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+}
+
+/* Upstream draws the resize handle as a grey bar across the card. Only its grip stays. */
+#sublistcontainer .ve-ui-resize__ele-resize {
+  border-block-start: 0;
+  background: none;
+}

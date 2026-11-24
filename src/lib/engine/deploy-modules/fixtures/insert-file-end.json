@@ -1,0 +1,17 @@
+{
+  "name": "insert-file-end",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {
+    "block.js": "const z = 1;\n"
+  },
+  "patches": [
+    {
+      "insertFile": "block.js",
+      "marker": "HBM:test"
+    }
+  ],
+  "input": "const a = 1;\n\n\n",
+  "expected": "const a = 1;\n\n/* === BEGIN HBM:test === */\nconst z = 1;\n/* === END HBM:test === */",
+  "status": "applied"
+}

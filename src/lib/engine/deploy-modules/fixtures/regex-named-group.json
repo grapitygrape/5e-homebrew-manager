@@ -1,0 +1,16 @@
+{
+  "name": "regex-named-group",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "isRegex": true,
+      "find": "(?P<word>Species)",
+      "replace": "${word}!"
+    }
+  ],
+  "input": "Species",
+  "expected": "Species!",
+  "status": "applied"
+}

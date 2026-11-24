@@ -1,0 +1,26 @@
+{
+  // Extends SvelteKit's generated config (paths, $lib alias, svelte types).
+  // Run `npm run sync` once to generate ./.svelte-kit/tsconfig.json.
+  "extends": "./.svelte-kit/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "esnext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    // Tests import the Foundry bridge's plain-JS lib/ files directly (see
+    // foundry-match.test.ts) — allowJs lets tsc load them instead of erroring
+    // that they need a .d.ts.
+    "allowJs": true,
+    "sourceMap": true,
+    // The engine uses explicit `.ts` import specifiers so the SAME files run
+    // under Node's native type-stripping (zero-dep tests) AND build with Vite.
+    // This flag makes svelte-check/tsc accept them; it requires noEmit (Vite
+    // does the bundling, tsc only type-checks here).
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}

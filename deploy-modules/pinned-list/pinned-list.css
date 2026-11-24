@@ -1,0 +1,46 @@
+/* ── Pinned List - Box ──────────────────────────────────────────────────────── */
+/* The site's list controls and its table, together. */
+.hm-pinned-list {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 0.6rem;
+  margin-block-end: 0.6rem;
+  padding: 0.8rem;
+  border: 1px solid color-mix(in oklch, currentcolor 25%, transparent);
+  border-radius: 0.8rem;
+  background: var(--card-ondefault-light);
+}
+
+.ve-night-mode .hm-pinned-list {
+  background: var(--card-oninverse-light);
+}
+
+/* The site hides the table and controls when nothing is pinned; the box goes too. */
+.hm-pinned-list:not(:has(.sublist--visible)) {
+  display: none;
+}
+
+.hm-pinned-list > * {
+  margin-block: 0;
+}
+
+/* ── Pin Button - Base ──────────────────────────────────────────────────────── */
+.hm-pin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  svg {
+    inline-size: 1.4rem;
+    block-size: 1.4rem;
+    fill: currentcolor;
+  }
+}
+
+/* ── Pin Button - States ────────────────────────────────────────────────────── */
+.ve-btn.ve-btn-default.hm-pin-button:is(:hover, :focus-visible) {
+  border-color: var(--theme-color);
+  background: var(--theme-color);
+  color: #fff;
+}

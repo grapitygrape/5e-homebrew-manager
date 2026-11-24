@@ -1,0 +1,17 @@
+{
+  "name": "allow-missing-skipped",
+  "target": "js/test.js",
+  "values": {},
+  "inserts": {},
+  "patches": [
+    {
+      "note": "Missing thing",
+      "find": "nope",
+      "replace": "x",
+      "allowMissing": true
+    }
+  ],
+  "input": "abc\n",
+  "expected": "abc\n",
+  "status": "skipped"
+}

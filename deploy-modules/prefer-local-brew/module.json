@@ -1,0 +1,22 @@
+{
+  "title": "Prefer homebrew/ files over stored copies",
+  "description": "When a brew is both in the site's homebrew/ folder and saved in the browser, uses the site's file so entries don't show up twice.",
+  "order": 120,
+  "defaultEnabled": true,
+  "card": "Homebrew loading",
+  "entries": [
+    {
+      "type": "patch",
+      "description": "Prefer a homebrew/ file over a browser-stored copy of the same brew",
+      "target": "js/utils-brew/utils-brew-base.js",
+      "patches": [
+        {
+          "note": "In pGetBrew, skip stored brews whose every source a local brew already declares",
+          "find": "\t\t\tconst out = [\n\t\t\t\t...(await this._pGetBrewRaw({lockToken})),\n\t\t\t\t...(await this._pGetBrew_pGetLocalBrew({lockToken})),\n\t\t\t];",
+          "replace": "\t\t\t// HBM: a `homebrew/` file wins over a stored copy of the same brew. A brew added\n\t\t\t// through Manage Homebrew is kept in the browser and re-pulled from the repo on\n\t\t\t// \"Update all\", so it drifts from the curated local file and both load side by\n\t\t\t// side - two of every entity under one source. Drop a stored brew only when the\n\t\t\t// local folder already provides EVERY source it declares; it stays in storage, so\n\t\t\t// Manage Homebrew still lists it and can delete it.\n\t\t\tconst brewsLocal = await this._pGetBrew_pGetLocalBrew({lockToken});\n\t\t\tconst localSources = new Set(brewsLocal.flatMap(brew => (brew?.body?._meta?.sources || []).map(src => src?.json).filter(Boolean)));\n\t\t\tconst brewsStored = (await this._pGetBrewRaw({lockToken}))\n\t\t\t\t.filter(brew => {\n\t\t\t\t\tconst sources = (brew?.body?._meta?.sources || []).map(src => src?.json).filter(Boolean);\n\t\t\t\t\treturn !sources.length || !sources.every(src => localSources.has(src));\n\t\t\t\t});\n\t\t\tconst out = [\n\t\t\t\t...brewsStored,\n\t\t\t\t...brewsLocal,\n\t\t\t];",
+          "allowMissing": false
+        }
+      ]
+    }
+  ]
+}

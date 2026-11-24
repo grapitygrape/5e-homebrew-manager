@@ -1,0 +1,339 @@
+/* ── Bestiary - Pinned List Columns ──────────────────────────────────────── */
+/* Header and rows share one grid, so each heading sits over its column. The last column
+   holds the row's buttons: add and remove, plus randomize and lock in the builder. */
+:where(.bestiary-sublist, .bestiary-row-actions) {
+  --bestiary-row-button-size: 1.6rem;
+}
+
+.bestiary-sublist {
+  --bestiary-sublist-actions-count: 2;
+  --bestiary-sublist-columns:
+    minmax(0, 5fr)
+    minmax(0, 3.5fr)
+    minmax(3.6rem, 1.2fr)
+    minmax(4.8rem, 1.5fr)
+    calc(var(--bestiary-sublist-actions-count) * (var(--bestiary-row-button-size) + var(--shell-space-1)) + var(--shell-space-2));
+
+  #sublistsort,
+  a.bestiary-sublist-cells {
+    display: grid;
+    grid-template-columns: var(--bestiary-sublist-columns);
+    align-items: center;
+  }
+
+  #sublistsort > .ve-btn,
+  .bestiary-sublist-cells > * {
+    min-inline-size: 0;
+    padding-inline: var(--shell-space-2);
+  }
+
+  /* Text columns read from the start; CR and Number centre over their values. */
+  #sublistsort > .ve-btn {
+    text-align: center;
+  }
+
+  #sublistsort > :is([data-sort="name"], [data-sort="type"]) {
+    text-align: start;
+  }
+
+  .bestiary-sublist-cells > :not(.bestiary-sublist-actions) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ── Bestiary - Pinned List In The Builder ───────────────────────────────── */
+/* The builder's row is a div, shown only in builder mode; giving it a display outside
+   that mode would show both rows. */
+.best__ecgen-active .bestiary-sublist {
+  --bestiary-sublist-actions-count: 4;
+
+  .bestiary-sublist-cells {
+    display: grid;
+    grid-template-columns: var(--bestiary-sublist-columns);
+    align-items: center;
+    padding-block: 0.1rem;
+  }
+
+  /* CR and Number inputs. Upstream's ve-w-100 sets the width with !important; a maximum
+     still caps it. */
+  .bestiary-sublist-cells input {
+    max-inline-size: 4.8rem;
+    block-size: 1.8rem;
+    padding: 0;
+    border: var(--shell-panel-border);
+    border-radius: var(--shell-radius-small);
+    background: var(--shell-color-surface);
+    box-shadow: none;
+    font-size: var(--shell-font-size-small);
+  }
+}
+
+/* The builder's list grows with its rows instead of keeping the resizable height. The
+   handle writes an inline height, which only min and max sizes can override. */
+.best__ecgen-active #sublistcontainer.bestiary-sublist {
+  min-block-size: max-content;
+  max-block-size: max-content;
+
+  .ve-ui-resize__ele-resize {
+    display: none;
+  }
+
+  /* Upstream gives the list a 100% height. Inside a max-content box that is circular, so the
+     list claimed more than its rows and squeezed the header and footer. */
+  #sublist {
+    block-size: auto;
+  }
+
+  .sublist-footer {
+    flex-shrink: 0;
+  }
+}
+
+/* ── Bestiary - Row Buttons ──────────────────────────────────────────────── */
+.bestiary-sublist-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--shell-space-1);
+}
+
+.bestiary-sublist-builder-actions {
+  display: contents;
+}
+
+/* The main list's add and remove buttons only exist in builder mode. They float over the
+   end of the row, so the columns keep lining up with their headings. While shown they take
+   the row's fill, covering any source text they land on in a narrow pane. */
+.best__ecgen-active .bestiary-row-actions {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--shell-space-1);
+  padding-inline: var(--shell-space-2);
+}
+
+.ve-lst__row:hover .bestiary-row-actions {
+  background: var(--shell-color-surface-raised);
+}
+
+@media (hover: none) {
+  .best__ecgen-active .bestiary-row-actions {
+    background: var(--shell-color-surface);
+  }
+}
+
+.ve-lst__row-inner:has(> .bestiary-row-actions) {
+  position: relative;
+}
+
+/* Bare icons: no frame or fill, just the glyph. */
+.bestiary-row-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  inline-size: var(--bestiary-row-button-size);
+  block-size: var(--bestiary-row-button-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--shell-radius-small);
+  background: none;
+  box-shadow: none;
+  color: var(--shell-color-text-muted);
+  font-size: 1rem;
+  line-height: 1;
+
+  &:is(:hover, :focus-visible) {
+    background: none;
+    color: var(--shell-color-text);
+  }
+
+  &.ve-active {
+    color: var(--shell-color-title);
+  }
+}
+
+/* Shown on the hovered row only. Touch screens can't hover, so there they always show.
+   A set lock stays visible, as it's state rather than an action. */
+@media (hover: hover) {
+  .bestiary-row-button:not(.ve-active) {
+    opacity: 0;
+  }
+
+  .ve-lst__row:is(:hover, :focus-within) .bestiary-row-button {
+    opacity: 1;
+  }
+}
+
+/* ── Bestiary - Search Row ───────────────────────────────────────────────── */
+/* The Encounter Builder button makes the row too long for a phone, so it wraps rather than
+   squeezing the search box to nothing. */
+body:not(.best__ecgen-active) #filter-search-group:has(#btn-encounterbuild) {
+  flex-wrap: wrap;
+
+  > .ve-relative {
+    flex: 1 1 16rem;
+  }
+}
+
+.sublist {
+	height: auto;
+}
+
+/* ── Bestiary - Pinned List Footer ───────────────────────────────────────── */
+.sublist-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--shell-space-3);
+  padding-block: var(--shell-space-2) 0;
+  padding-inline: var(--shell-space-2);
+  color: var(--shell-color-text-muted);
+  font-size: var(--shell-font-size-small);
+
+  #totalcr {
+    color: var(--shell-color-text);
+  }
+}
+
+.sublist-footer-clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--shell-color-link);
+  font-size: inherit;
+  cursor: pointer;
+
+  &:is(:hover, :focus-visible) {
+    text-decoration: underline;
+  }
+}
+
+/* ── Bestiary - Encounter Builder Header ─────────────────────────────────── */
+/* Not a card. The padding matches the list pane's frame, so the buttons sit level with
+   its search row. */
+.encounter-builder-header {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--shell-space-3);
+  padding: calc(var(--shell-panel-padding) + 0.1rem);
+}
+
+.encounter-builder-title {
+  margin: 0;
+  color: var(--shell-color-title);
+  font-family: var(--shell-font-headings);
+  font-size: 2.4rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ── Bestiary - Encounter Builder Sections ───────────────────────────────── */
+/* Each section is a card like the pinned list above it. */
+.encounter-builder {
+  gap: var(--shell-space-2);
+}
+
+.encounter-builder-section {
+  padding: var(--shell-space-3);
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-panel-radius);
+  background: var(--shell-color-surface);
+
+  &:empty {
+    display: none;
+  }
+
+  h4 {
+    margin-block: 0 var(--shell-space-2);
+  }
+
+  hr {
+    margin-block: var(--shell-space-3);
+    border-color: var(--shell-color-border);
+  }
+
+  /* The card edge already separates sections. */
+  :is(hr:first-child, hr:last-child) {
+    display: none;
+  }
+
+  label {
+    gap: var(--shell-space-2);
+  }
+
+  label > b {
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+/* Generate and adjust sit under the difficulty totals, in the same card. */
+.encounter-builder-difficulty-controls {
+  margin-block-start: var(--shell-space-3);
+  padding-block-start: var(--shell-space-3);
+  border-block-start: var(--shell-panel-border);
+
+  .ve-vr-2 {
+    border-color: var(--shell-color-border);
+  }
+}
+
+/* ── Bestiary - Encounter Builder Fields ─────────────────────────────────── */
+/* Selects and inputs take the shell's control frame, matching the buttons beside them. */
+.encounter-builder :is(select, input).ve-form-control {
+  block-size: var(--shell-control-block-size);
+  padding-block: 0;
+  border: var(--shell-control-border);
+  border-radius: var(--shell-radius-small);
+  background-color: var(--shell-color-surface);
+  box-shadow: none;
+  color: var(--shell-color-text);
+  font-size: var(--shell-font-size-small);
+}
+
+/* Difficulty, shape and generate sit in one joined strip. */
+.encounter-builder .ve-input-group {
+  > * {
+    border-radius: 0;
+  }
+
+  > * + * {
+    margin-inline-start: -0.1rem;
+  }
+
+  > :first-child {
+    border-start-start-radius: var(--shell-radius-small);
+    border-end-start-radius: var(--shell-radius-small);
+  }
+
+  > :last-child {
+    border-start-end-radius: var(--shell-radius-small);
+    border-end-end-radius: var(--shell-radius-small);
+  }
+}
+
+/* Icon buttons here at least square. Some also carry text ("Add Players"), which
+   :only-child can't tell apart, so they grow rather than take a fixed width. */
+.encounter-builder .ve-btn:has(> .glyphicon:only-child) {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--shell-space-2);
+  min-inline-size: var(--shell-control-block-size);
+}
+
+/* The caret beside "Adjust to …" is square like an icon button. */
+.encounter-builder .ecgen__btn-adjust-menu {
+  min-inline-size: var(--shell-control-block-size);
+  padding-inline: 0;
+}
+
+.encounter-builder .ecgen-therm__wrp {
+  border: var(--shell-panel-border);
+  border-radius: var(--shell-radius-small);
+}

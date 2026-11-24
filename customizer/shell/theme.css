@@ -1,0 +1,451 @@
+/* The custom look over upstream's content: fonts, link colours, headings, boxed text and the
+   home page. shell.css imports this into its own layer, above upstream's and below every
+   other shell file, so shell components win here without any specificity tricks. */
+
+/* ── Theme - Fonts ───────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Majesty Bold";
+  src: url("../fonts/majesty-bold.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Modesto Condensed";
+  src: url("../hbm/modesto-condensed/modesto-condensed.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+/* Ships with the manager (site-theme module), for when the data folder lacks the two above. */
+@font-face {
+  font-family: "Nodesto Caps Condensed";
+  src: url("../hbm/nodesto/nodesto-caps-condensed.otf") format("opentype");
+  font-weight: 100 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nodesto Caps Condensed";
+  src: url("../hbm/nodesto/nodesto-caps-condensed-bold.otf") format("opentype");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nodesto Caps Condensed";
+  src: url("../hbm/nodesto/nodesto-caps-condensed-italic.otf") format("opentype");
+  font-weight: 100 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nodesto Caps Condensed";
+  src: url("../hbm/nodesto/nodesto-caps-condensed-bold-italic.otf") format("opentype");
+  font-weight: 700 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Upstream reads these for its biggest renderer headings. */
+:root {
+  --sz-font-h0: 3rem;
+  --sz-font-h1: 2.2rem;
+}
+
+/* On its own fixed layer rather than background-attachment: fixed, which repaints the whole
+   viewport on every scroll. */
+body {
+  background: var(--shell-color-page);
+
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--shell-image-page) center / cover no-repeat;
+    pointer-events: none;
+  }
+}
+
+.overlay-noise {
+  display: none;
+}
+
+/* The class sidebar is a separate table from #pagecontent. */
+:is(#pagecontent, #statsprof .cls__stats) {
+  font-family: var(--shell-font-body);
+}
+
+/* ── Theme - Links ───────────────────────────────────────────────────────── */
+a {
+  color: var(--shell-color-link);
+
+  &:where(:hover, :focus) {
+    color: oklch(from var(--shell-color-link) calc(l * var(--shell-hover-lightness)) calc(c * var(--shell-hover-chroma)) h);
+  }
+}
+
+/* Book contents read as plain text at night. List rows are set in list-page.css. */
+.ve-night-mode #listcontainer a {
+  color: var(--rgb-font);
+}
+
+/* ── Theme - Headings ────────────────────────────────────────────────────── */
+:is(h2, h3, h4, .home__stripe-header, .cls-side__name, .cls-side__section-head) {
+  font-family: var(--shell-font-headings);
+}
+
+:is(h1, .cls-side__name, .home__stripe-header, .ve-stats__th-name, .ve-cls-tbl__disp-name) {
+	font-family: var(--shell-font-titles);
+	font-variant: unset;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2,
+.cls-side__name {
+  font-size: 2.5rem;
+}
+
+h3,
+.cls-side__section-head {
+  font-size: 2.2rem;
+}
+
+h4 {
+  font-size: 1.875rem;
+}
+
+/* Keeps an italic word from touching the one after it. */
+.entry-title-inner i::after {
+  content: " ";
+  padding: 0.1rem;
+}
+
+.entry-title-inner .ve-muted {
+  -webkit-text-fill-color: var(--shell-color-text-muted);
+  filter: none;
+}
+
+.ve-night-mode .entry-title-inner:has(.ve-muted) {
+  filter: none;
+}
+
+/* ── Theme - Class Sidebar ───────────────────────────────────────────────── */
+#statsprof {
+  th {
+    padding-block: 0.1rem;
+    padding-inline: 0.7rem;
+  }
+
+  .cls-side__section {
+    font-size: 0.9em;
+  }
+}
+
+/* ── Theme - Boxed Text ──────────────────────────────────────────────────── */
+.ve-rd__b-inset {
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  > :last-child, p:last-child {
+    margin-block-end: 0;
+  }
+}
+
+/* A collapse toggle with no title sits in the corner rather than on its own line. */
+.ve-rd__h--2-inset-no-name:has(.ve-rd__h-toggle) {
+  position: absolute;
+  inset-block-start: 0.625rem;
+  inset-inline-end: 0.875rem;
+}
+
+/* The frame is drawn twice: the clipped box is the outer line, and ::before fills it
+   0.1rem in. ::after adds the rounded inner line. */
+.ve-night-mode .ve-rd__b-inset {
+  --inset-shape: polygon(
+    0% var(--shell-inset-notch),
+    var(--shell-inset-notch) 0%,
+    calc(100% - var(--shell-inset-notch)) 0%,
+    100% var(--shell-inset-notch),
+    100% calc(100% - var(--shell-inset-notch)),
+    calc(100% - var(--shell-inset-notch)) 100%,
+    var(--shell-inset-notch) 100%,
+    0% calc(100% - var(--shell-inset-notch))
+  );
+
+  position: relative;
+  min-block-size: 3.5rem;
+  margin-inline: 1rem;
+  padding-block: 1rem;
+  padding-inline: 1.5rem;
+  border: 0;
+  background: var(--shell-color-inset-frame);
+  clip-path: var(--inset-shape);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+  }
+
+  &::before {
+    z-index: -1;
+    inset: 0.1rem;
+    background: var(--shell-color-inset-fill);
+    clip-path: var(--inset-shape);
+  }
+
+  &::after {
+    inset: 0;
+    border: 0.1rem solid var(--shell-color-inset-frame);
+    border-radius: var(--shell-inset-corner);
+    pointer-events: none;
+  }
+}
+
+/* ── Theme - Fluff Embeds ────────────────────────────────────────────────── */
+/* A monster's lore is pulled in from the bestiary (render.js) but reads as the book's own
+   text, so its embed drops the frame and the collapse bar. */
+.ve-rd__wrp-embedded-data--fluff {
+  inline-size: 100%;
+  margin: 0;
+  border: 0;
+
+  > .ve-rd__data-embed-header {
+    display: none;
+  }
+
+  /* The cell holding the lore keeps upstream's table padding, which indents it from the
+     surrounding text. Tables inside the lore keep theirs. */
+  [data-rd-rendered-data-embed-render-target] > tr > td {
+    padding: 0;
+  }
+}
+
+/* A statblock embedded in book text inherits the book's loose spacing (15px paragraph gaps,
+   1.7 line height). Resetting the spacing variables here tightens it without touching the book. */
+.ve-rd__wrp-embedded-data--stats {
+  --h-mb-p: var(--shell-space-2);
+  --h-mb-li: var(--shell-space-1);
+
+  line-height: 1.35;
+
+  .ve-rd__wrp-embedded-data-table {
+    line-height: inherit;
+  }
+
+  .ve-rd__compact-stat {
+    margin-block-start: var(--shell-space-1);
+  }
+
+  .ve-stats__sect-header-inner {
+    margin-block: var(--shell-space-3) var(--shell-space-2);
+    padding-block-end: var(--shell-space-1);
+  }
+}
+
+/* ── Theme - Buttons ─────────────────────────────────────────────────────── */
+/* Buttons outside the shell's bars. The bars restyle these in controls.css. */
+.ve-btn:is(.ve-btn-primary, .ve-btn-info) {
+  border: 0.1rem solid oklch(0% 0 0deg / 20%);
+  background-color: var(--theme-button-fill, var(--shell-color-accent));
+
+  &:is(:hover, :focus) {
+    --theme-button-fill: oklch(from var(--shell-color-accent) calc(l * 0.75) calc(c * 0.8) h);
+  }
+}
+
+.ve-btn-info {
+  --theme-button-fill: oklch(from var(--shell-color-accent) calc(l * 1.2) calc(c * 1.1) h);
+}
+
+/* ── Theme - Lists ───────────────────────────────────────────────────────── */
+.ve-night-mode .list-multi-selected {
+  background: var(--shell-color-surface-raised);
+  box-shadow: none;
+}
+
+/* ── Theme - Home ────────────────────────────────────────────────────────── */
+:root {
+  --home-lift: -0.1rem;
+  --home-icon-scale: 1.08;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --home-lift: 0;
+    --home-icon-scale: 1;
+  }
+}
+
+/* Each section sets one colour, and its heading and cards draw everything from it. */
+:is(.home__h-player, .home__btn-player) {
+  --home-color: var(--shell-color-home-player);
+}
+
+:is(.home__h-rule, .home__btn-rule) {
+  --home-color: var(--shell-color-home-rules);
+}
+
+:is(.home__h-dm, .home__btn-dm) {
+  --home-color: var(--shell-color-home-dm);
+}
+
+/* The headings are placed above their cards rather than in the flow, so the stripe's top
+   padding and the gap between the rows make room for them. */
+.home__stripe {
+  flex: 1;
+  padding-block-start: 6.6rem;
+}
+
+.home__split ~ .home__split {
+  margin-block-start: 2.4rem;
+}
+
+@media (width <= 991px) {
+  .home__mobile-visible + .home__wrp-buttons {
+    margin-block-start: 2.4rem;
+  }
+}
+
+/* The heading trails off into a rule in its section colour; on phones it sits between two. */
+.home__stripe-header {
+  inset-block-start: -5.8rem;
+  font-size: 3.5rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: var(--shell-space-4);
+
+    &::before,
+    &::after {
+      flex: 1;
+      block-size: 0.2rem;
+      border-radius: 0.1rem;
+      background: linear-gradient(var(--home-rule-dir, to right), var(--home-color), transparent);
+    }
+
+    &::before {
+      --home-rule-dir: to left;
+    }
+
+    &::after {
+      content: "";
+    }
+  }
+}
+
+.home__footer {
+	text-align: center;
+	p {
+		color: var(--shell-color-text-muted);
+		margin: 0;
+	}
+}
+
+@media (width <= 768px) {
+  .home__stripe-header > div::before {
+    content: "";
+  }
+}
+
+/* A plain card with a neutral frame. On hover the frame takes the section colour, the card
+   lifts a little and the icon scales up. */
+:is(.home__btn-player, .home__btn-rule, .home__btn-dm) {
+  --home-color-hover: oklch(from var(--home-color) calc(l * var(--shell-hover-lightness)) calc(c * var(--shell-hover-chroma)) h);
+
+  justify-content: center;
+  gap: var(--shell-space-4);
+  border: 0.1rem solid var(--shell-color-border);
+  border-radius: var(--shell-radius-medium);
+  background: var(--shell-color-surface);
+  box-shadow: var(--shell-home-shadow);
+  color: var(--home-color);
+  padding-block-start: var(--shell-space-4);
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+
+  &:is(:hover, :focus-visible) {
+    transform: translateY(var(--home-lift));
+    border-color: var(--home-color-hover);
+    /* The hover token is the shadow's geometry; its colour comes from the section. */
+    box-shadow: var(--shell-home-shadow-hover) color-mix(in oklch, var(--home-color) 50%, transparent);
+    color: var(--home-color-hover);
+
+    .home__icn-page {
+      transform: scale(var(--home-icon-scale));
+    }
+  }
+
+  &:active {
+    transform: none;
+  }
+}
+
+.home__btn-page {
+	height: 14rem;
+	align-items: center;
+}
+
+/* Duotone: the front layer is a step lighter at night (darker by day) than the back one. */
+.home__icn-page {
+  --fa-primary-color: oklch(from var(--home-color) calc(l * var(--shell-home-icon-lightness)) c h);
+  --fa-secondary-color: var(--home-color);
+  --fa-secondary-opacity: 0.5;
+
+  block-size: 5rem;
+  font-size: 4.4rem;
+  line-height: 5rem;
+  filter: drop-shadow(0 0.2rem 0.4rem color-mix(in oklch, var(--home-color) 40%, transparent));
+  transition: transform 200ms ease;
+}
+
+/* The colour is in the frame and icon, so the label stays plain text. */
+.home__lbl-page {
+  margin-block-start: 0;
+  color: var(--shell-color-text);
+  font-family: var(--shell-font-titles);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.1;
+  transition: color 200ms ease;
+  height: 48px;
+}
+
+.ve-night-mode .home__btn-page:is(:hover, :focus-visible) .home__lbl-page {
+  color: oklch(100% 0 0deg);
+}
+
+/* ── Theme - Items ───────────────────────────────────────────────────────── */
+/* In wide mode the item page shows one full-width list instead of mundane and magic side by side. */
+.style-switch__wide #listcontainer.hm-itm__single-list {
+  &.ve-itm__wrp-lists {
+    flex-flow: column;
+  }
+
+  .ve-itm__wrp-list--mundane {
+    min-inline-size: 100%;
+    max-inline-size: 100%;
+    margin-inline-end: 0;
+  }
+}
+
+
+.row::after, .row::before {
+  content: none;
+}
+
+
+.ve-lst__row-inner {
+  padding-inline: 0;
+}
